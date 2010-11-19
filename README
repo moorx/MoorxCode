@@ -1,0 +1,13 @@
+MoorxCode
+
+This is my personal collection of useful game programming code stuff and to some
+extent, acts as my personal programming portfolio. Everything is under BSD 
+license, so have fun with it! However, I'd be glad to get some feedback if you
+find my code useful or think it sucks... You can reach me at mail.clang@gmail.com
+
+The code is formatted using the Google C++ style guide as a personal exercise in
+adhering to someone else's standards. So if you find the way this code looks 
+funny or strange - blame the Google guys!
+
+To build the code, use SConstruct. So far I only built it on MacOS, using clang
+and gcc, but I'll soon test it on Visual C++.

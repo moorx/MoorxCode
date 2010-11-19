@@ -1,0 +1,5 @@
+.DS_Store
+*.o
+*.a
+config.log
+.sconsign.dblite
