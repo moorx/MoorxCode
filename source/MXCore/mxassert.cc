@@ -25,31 +25,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef MXCORE_MXASSERT_H_
-#define MXCORE_MXASSERT_H_
-
-#include "MXBase/mxbase.h"
+#include <stdlib.h>
+#include "MXCore/text_output.h"
 
 namespace mxcore {
 namespace internal {
 
 void FailAssertion(const char8_t* expression, const char8_t* file, 
-                   const uint32_t line);
+                   const uint32_t line) {
+  Print("Assertion \"%s\" failed in %s line %u\n", expression, file, line);
+  abort();
+}
 
 }  // namespace internal
 }  // namespace mxcore
-
-#ifdef MX_ASSERT_ENABLED
-  #undef MX_ASSERT_ENABLED
-  #define MX_ASSERT_ENABLED 1
-#else
-  #define MX_ASSERT_ENABLED MX_DEBUG
-#endif
-
-#if MX_ASSERT_ENABLED
-  #define MX_ASSERT(expression) (void)((expression) || (mxcore::internal::FailAssertion(#expression, __FILE__, __LINE__), 0))
-#else
-  #define MX_ASSERT(expression)
-#endif
-
-#endif  // MXCORE_MXASSERT_H_
