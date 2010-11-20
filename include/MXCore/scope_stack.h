@@ -28,6 +28,7 @@
 #ifndef MXCORE_SCOPE_STACK_H_
 #define MXCORE_SCOPE_STACK_H_
 
+#include <new>
 #include "MXBase/mxbase.h"
 #include "MXCore/linear_allocator.h"
 
@@ -60,10 +61,11 @@ class ScopeStack {
   }
 
   ~ScopeStack() {
-    for (Finalizer* finalizer; finalizer != NULL; finalizer = finalizer->next) {
+    for (Finalizer* finalizer = finalizer_chain_; finalizer != NULL;
+         finalizer = finalizer->next) {
       (*finalizer->function_)(GetObjectFromFinalizer(finalizer));
     }
-    allocator_.rewind(base_);
+    allocator_.Rewind(base_);
   }
 
   // Allocates and constructs an object and adds a call to the desctructor to
@@ -73,7 +75,7 @@ class ScopeStack {
     Finalizer* finalizer = AllocateWithFinalizer(sizeof(T));
     T* result = new(GetObjectFromFinalizer(finalizer)) T;
 
-    finalizer->function = &CallDestructor<T>;
+    finalizer->function_ = &CallDestructor<T>;
     finalizer->next = finalizer_chain_;
     finalizer_chain_ = finalizer;
 
@@ -90,8 +92,7 @@ class ScopeStack {
  private:
   // Given a pointer to a finalizer, calculates the offset to the actual object
   // and returns it.
-  static MX_FORCE_INLINE void* GetObjectFromFinalizer(
-      const Finalizer* finalizer) const {
+  MX_FORCE_INLINE void* GetObjectFromFinalizer(Finalizer* finalizer) const {
     return reinterpret_cast<uint8_t*>(finalizer) + LinearAllocator::AlignSize(
         sizeof(Finalizer), allocator_.alignment());
   }
@@ -100,7 +101,7 @@ class ScopeStack {
   // object. Allocates enough memory for object and finalizer and guarantees
   // proper alignment of both.
   MX_FORCE_INLINE Finalizer* AllocateWithFinalizer(const size_t size) const {
-    return reinterpret_cast<Finalizer*>(alloc_.Allocate(
+    return reinterpret_cast<Finalizer*>(allocator_.Allocate(
             size + LinearAllocator::AlignSize(sizeof(Finalizer), 
                                               allocator_.alignment())));
   }
