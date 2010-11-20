@@ -3,3 +3,4 @@
 *.a
 config.log
 .sconsign.dblite
+tags
