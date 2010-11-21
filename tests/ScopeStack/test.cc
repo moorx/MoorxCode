@@ -74,6 +74,7 @@ int main()
   }
 
   Print("%p\n", allocator.marker());
+  FreeAligned(memory);
 
   return 0;
 }
