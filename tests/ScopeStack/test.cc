@@ -54,7 +54,7 @@ int main()
     Foo* foos[10];
     ScopeStack outer_scope(allocator);
     for (int32_t i = 0; i < 10; ++i) {
-      foos[i] = outer_scope.AllocateAndConstruct<Foo>();
+      foos[i] = outer_scope.AllocateWithFinalizer<Foo>();
     }
 
     {
@@ -64,7 +64,7 @@ int main()
       ScopeStack inner_scope(allocator);
       Bar* bars[10];
       for (int32_t i = 0; i < 10; ++i) {
-        bars[i] = inner_scope.Allocate<Bar>();
+        bars[i] = inner_scope.AllocateObject<Bar>();
       }
 
       Print("%p\n", allocator.marker());

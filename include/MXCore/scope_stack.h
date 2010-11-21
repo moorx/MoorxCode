@@ -71,7 +71,7 @@ class ScopeStack {
   // Allocates and constructs an object and adds a call to the desctructor to
   // the front of the finalizer chain.
   template <class T>
-  MX_FORCE_INLINE T* AllocateAndConstruct() {
+  MX_FORCE_INLINE T* AllocateWithFinalizer() {
     Finalizer* finalizer = AllocateWithFinalizer(sizeof(T));
     T* result = new(GetObjectFromFinalizer(finalizer)) T;
 
@@ -82,11 +82,17 @@ class ScopeStack {
     return result;
   }
 
-  // Simply allocates a chunk of memory. No measures for construction or cleanup
-  // are taken.
+  // Allocates memory and constructs an object but doesn't add it to the
+  // finalizer list. Use this for structs and objects that don't need to clean
+  // up.
   template <class T>
-  MX_FORCE_INLINE T* Allocate() {
+  MX_FORCE_INLINE T* AllocateObject() const {
     return new(allocator_.Allocate(sizeof(T))) T;
+  }
+
+  // Allocate a chunk of raw memory from the underlying linear allocator.
+  MX_FORCE_INLINE void* AllocateRaw(const size_t size) const {
+    return allocator_.Allocate(size);
   }
 
  private:
