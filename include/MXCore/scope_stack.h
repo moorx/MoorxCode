@@ -95,6 +95,10 @@ class ScopeStack {
     return allocator_.Allocate(size);
   }
 
+  MX_FORCE_INLINE size_t alignment() const {
+    return allocator_.alignment();
+  }
+
  private:
   // Given a pointer to a finalizer, calculates the offset to the actual object
   // and returns it.
