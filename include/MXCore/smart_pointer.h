@@ -28,6 +28,8 @@
 #ifndef MXCORE_SMART_POINTER_H_
 #define MXCORE_SMART_POINTER_H_
 
+#include "MXBase/mxbase.h"
+
 namespace mxcore {
 
 // Smart pointer class. Keeps track of all references to a pointer and deletes
