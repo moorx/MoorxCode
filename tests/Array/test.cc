@@ -46,13 +46,15 @@ class Foo {
   int32_t f_;
 };
 
-int main()
-{
-  uint8_t* memory = reinterpret_cast<uint8_t*>(AllocateAligned(4096));
-  LinearAllocator allocator(memory, 4096);
+struct Bar {
+  Bar() : b_(64) {}
+  uint64_t b_;
+};
+
+void TestFinalizer(LinearAllocator& allocator) {
   ScopeStack scope(allocator);
   
-  Array<Foo> array(scope, 100);
+  Array<Foo, FinalizerArrayTraits<Foo> > array(scope, 100);
   MX_ASSERT(array.size() == 100);
 
   for (int32_t i = 0; i < 100; ++i) {
@@ -66,6 +68,33 @@ int main()
   for (int32_t i = 0; i < 100; ++i) {
     MX_ASSERT(array[i].f_ == 13);
   }
+}
 
+void TestObject(LinearAllocator& allocator) {
+  ScopeStack scope(allocator);
+
+  Array<Bar, ObjectArrayTraits<Bar> > array(scope, 100);
+  MX_ASSERT(array.size() == 100);
+
+  for (int32_t i = 0; i < 100; ++i) {
+    MX_ASSERT(array[i].b_ == 64);
+  }
+  
+  for (int32_t i = 0; i < 100; ++i) {
+    array[i].b_ = 48;
+  }
+  
+  for (int32_t i = 0; i < 100; ++i) {
+    MX_ASSERT(array[i].b_ == 48);
+  }
+}
+
+int main()
+{
+  uint8_t* memory = reinterpret_cast<uint8_t*>(AllocateAligned(4096));
+  LinearAllocator allocator(memory, 4096);
+  TestFinalizer(allocator);
+  TestObject(allocator);
+  FreeAligned(memory);
   return 0;
 }

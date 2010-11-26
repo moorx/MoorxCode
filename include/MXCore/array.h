@@ -129,7 +129,7 @@ class FinalizerArrayTraits : public internal::SparseArrayBase<MemberType> {
 // Basic fixed-size array. The internal behavior of the array is defined by a
 // set of array traits that may be exchanged for different use cases.
 template <class MemberType, 
-          class ArrayTraits = FinalizerArrayTraits<MemberType> >
+          class ArrayTraits>
 class Array {
  public:
   Array(ScopeStack& scope, const size_t size) : size_(size), traits_(scope, size) {
