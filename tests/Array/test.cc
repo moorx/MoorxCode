@@ -25,10 +25,47 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <MXCore/mxassert.h>
 #include <MXCore/array.h>
+#include <MXCore/text_output.h>
+#include <MXCore/raw_memory.h>
+#include <MXCore/linear_allocator.h>
+#include <MXCore/scope_stack.h>
+
+using namespace mxcore;
+
+class Foo {
+ public:
+  Foo() : f_(42) {
+  }
+
+  ~Foo() {
+    Print(".");
+  }
+
+  int32_t f_;
+};
 
 int main()
 {
+  uint8_t* memory = reinterpret_cast<uint8_t*>(AllocateAligned(4096));
+  LinearAllocator allocator(memory, 4096);
+  ScopeStack scope(allocator);
   
+  Array<Foo> array(scope, 100);
+  MX_ASSERT(array.size() == 100);
+
+  for (int32_t i = 0; i < 100; ++i) {
+    MX_ASSERT(array[i].f_ == 42);
+  }
+  
+  for (int32_t i = 0; i < 100; ++i) {
+    array[i].f_ = 13;
+  }
+  
+  for (int32_t i = 0; i < 100; ++i) {
+    MX_ASSERT(array[i].f_ == 13);
+  }
+
   return 0;
 }

@@ -35,6 +35,8 @@
 
 namespace mxcore {
 
+// Array implementation for storing objects with finalizers. When getting and
+// setting items, proper alignment and offset are used.
 template <class MemberType>
 class FinalizerArrayTraits {
  public:
@@ -54,10 +56,10 @@ class FinalizerArrayTraits {
     stepsize_ = finalizer_size + member_size;
   }
 
-  MX_FORCE_INLINE MemberType& operator[](const uint32_t size) {
-  }
-
-  MX_FORCE_INLINE const MemberType& operator[](const uint32_t size) const {
+  MX_FORCE_INLINE MemberType& GetItem(const int32_t index) {
+    uintptr_t base_address = reinterpret_cast<uintptr_t>(items_);
+    uintptr_t item_address = base_address + (index * stepsize_);
+    return *(reinterpret_cast<MemberType*>(item_address));
   }
 
  private:
@@ -66,6 +68,8 @@ class FinalizerArrayTraits {
   size_t stepsize_;
 };
 
+// Basic fixed-size array. The internal behavior of the array is defined by a
+// set of array traits that may be exchanged for different use cases.
 template <class MemberType, 
           class ArrayTraits = FinalizerArrayTraits<MemberType> >
 class Array {
@@ -75,15 +79,21 @@ class Array {
 
   MX_FORCE_INLINE MemberType& operator[](const int32_t index) {
     MX_ASSERT(index < size_);
+    return traits_.GetItem(index);
   }
 
   MX_FORCE_INLINE const MemberType& operator[](const int32_t index) const {
     MX_ASSERT(index < size_);
+    return traits_.GetItem(index);
+  }
+
+  MX_FORCE_INLINE size_t size() const {
+    return size_;
   }
 
  private:
-  ArrayTraits traits_;
   size_t size_;
+  ArrayTraits traits_;
 };
 
 }  // namespace mxcore
