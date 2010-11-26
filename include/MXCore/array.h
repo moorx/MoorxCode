@@ -36,7 +36,8 @@
 namespace mxcore {
 
 // Array implementation for storing objects with finalizers. When getting and
-// setting items, proper alignment and offset are used.
+// setting items, proper alignment and offset are used. Finalizers as well as
+// objects are aligned, meaning that lots of memory is wasted for small objects.
 template <class MemberType>
 class FinalizerArrayTraits {
  public:
