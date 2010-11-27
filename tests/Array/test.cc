@@ -54,7 +54,7 @@ struct Bar {
 void TestFinalizer(LinearAllocator& allocator) {
   ScopeStack scope(allocator);
   
-  Array<Foo, FinalizerArrayTraits<Foo> > array(scope, 100);
+  Array<Foo, FinalizerArrayTraits> array(scope, 100);
   MX_ASSERT(array.size() == 100);
 
   for (int32_t i = 0; i < 100; ++i) {
@@ -73,7 +73,7 @@ void TestFinalizer(LinearAllocator& allocator) {
 void TestObject(LinearAllocator& allocator) {
   ScopeStack scope(allocator);
 
-  Array<Bar, ObjectArrayTraits<Bar> > array(scope, 100);
+  Array<Bar> array(scope, 100);
   MX_ASSERT(array.size() == 100);
 
   for (int32_t i = 0; i < 100; ++i) {
@@ -89,12 +89,28 @@ void TestObject(LinearAllocator& allocator) {
   }
 }
 
+void TestRaw(LinearAllocator& allocator) {
+  ScopeStack scope(allocator);
+
+  Array<int16_t, RawArrayTraits> array(scope, 100);
+  MX_ASSERT(array.size() == 100);
+
+  for (int32_t i = 0; i < 100; ++i) {
+    array[i] = i;
+  }
+  
+  for (int32_t i = 0; i < 100; ++i) {
+    MX_ASSERT(array[i] == i);
+  }
+}
+
 int main()
 {
   uint8_t* memory = reinterpret_cast<uint8_t*>(AllocateAligned(4096));
   LinearAllocator allocator(memory, 4096);
   TestFinalizer(allocator);
   TestObject(allocator);
+  TestRaw(allocator);
   FreeAligned(memory);
   return 0;
 }

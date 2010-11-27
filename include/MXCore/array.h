@@ -35,114 +35,84 @@
 
 namespace mxcore {
 
-namespace internal {
-
-// Base for all array classes.
-template <class MemberType>
-class ArrayBase {
- public:
-  ArrayBase(ScopeStack& scope) : scope_(scope), items_(NULL) {
+// Allocates a raw piece of memory big enough to hold the given amount of items.
+// Does not construct objects or care for calling destructors.
+struct RawArrayTraits {
+  template <class T>
+  static T* AllocateArray(ScopeStack& scope, const size_t size) {
+    return reinterpret_cast<T*>(scope.AllocateRaw(size * sizeof(T)));
   }
 
-  MX_FORCE_INLINE MemberType& GetItem(const int32_t index) {
-    return items_[index];
+  template <class T>
+  static size_t CalcStepSize(ScopeStack& scope) {
+    return sizeof(T);
   }
-
- protected:
-  ScopeStack& scope_;
-  MemberType* items_;
 };
 
-// Base class for array implementations that store their members sparsely in
-// memory (with gaps between actual items) due to alignment or prepended
-// finalizers. Derived classes have to initialize stepsize_ explicitly as this
-// constructor sets it to the illegal value -1.
-template <class MemberType>
-class SparseArrayBase : public ArrayBase<MemberType> {
- public:
-  SparseArrayBase(ScopeStack& scope)
-      : ArrayBase<MemberType>(scope),
-        stepsize_(-1) {}
-
-  // Returns the item at the given index, using the step size to determine the
-  // proper memory address.
-  MX_FORCE_INLINE MemberType& GetItem(const int32_t index) {
-    uintptr_t base_address = reinterpret_cast<uintptr_t>(this->items_);
-    uintptr_t item_address = base_address + (index * stepsize_);
-    return *(reinterpret_cast<MemberType*>(item_address));
-  }
-
- protected:
-  size_t stepsize_;
-};
-
-}  // namespace internal
-
-// Array behavior for objects that do not require any teardown logic. Each
-// object is aligned to the scope's boundaries.
-template <class MemberType>
-class ObjectArrayTraits : public internal::SparseArrayBase<MemberType> {
- public:
-  ObjectArrayTraits(ScopeStack& scope, const size_t size)
-      : internal::SparseArrayBase<MemberType>(scope) {
-    MemberType* item;
-
+// Default array behavior. This allocates array items at aligned addresses
+// without finalizers.
+struct ObjectArrayTraits {
+  template <class T>
+  static T* AllocateArray(ScopeStack& scope, const size_t size) {
+    T* first = scope.AllocateObject<T>();
+    
     for (size_t i = 0; i < size; ++i) {
-      item = this->scope_.template AllocateObject<MemberType>();
-      if (i == 0) {
-        this->items_ = item;
-      }
+      scope.AllocateObject<T>();
     }
 
-    this->stepsize_ = LinearAllocator::AlignSize(sizeof(MemberType),
-                                                 this->scope_.alignment());
+    return first;
+  }
+
+  template <class T>
+  static size_t CalcStepSize(ScopeStack& scope) {
+    size_t item_size = LinearAllocator::AlignSize(sizeof(T),
+                                                  scope.alignment());
+    return item_size;
   }
 };
 
-// Array implementation for storing objects with finalizers. When getting and
-// setting items, proper alignment and offset are used. Finalizers as well as
-// objects are aligned, meaning that lots of memory is wasted for small objects.
-template <class MemberType>
-class FinalizerArrayTraits : public internal::SparseArrayBase<MemberType> {
- public:
-  FinalizerArrayTraits(ScopeStack& scope, const size_t size)
-      : internal::SparseArrayBase<MemberType>(scope) {
-    MemberType* item;
-
+// Makes an array allocate and construct objects with finalizers. If the scope
+// containing the array falls out of scope, all contained items are destructed.
+struct FinalizerArrayTraits {
+  template <class T>
+  static T* AllocateArray(ScopeStack& scope, const size_t size) {
+    T* first = scope.AllocateWithFinalizer<T>();
+    
     for (size_t i = 0; i < size; ++i) {
-      // .template is needed to treat the following name as a dependent template
-      // name.
-      item = this->scope_.template AllocateWithFinalizer<MemberType>();
-      if (i == 0) {
-        this->items_ = item;
-      }
+      scope.AllocateWithFinalizer<T>();
     }
 
-    size_t finalizer_size = LinearAllocator::AlignSize(sizeof(Finalizer), 
-                                                       this->scope_.alignment());
-    size_t item_size = LinearAllocator::AlignSize(sizeof(MemberType),
-                                                  this->scope_.alignment());
-    this->stepsize_ = finalizer_size + item_size;
+    return first;
+  }
+
+  template <class T>
+  static size_t CalcStepSize(ScopeStack& scope) {
+    size_t finalizer_size = LinearAllocator::AlignSize(sizeof(Finalizer),
+                                                       scope.alignment());
+    size_t item_size = LinearAllocator::AlignSize(sizeof(T),
+                                                  scope.alignment());
+    return finalizer_size + item_size;
   }
 };
 
-// Basic fixed-size array. The internal behavior of the array is defined by a
-// set of array traits that may be exchanged for different use cases.
-template <class MemberType, 
-          class ArrayTraits>
+// Fixed size array of a given type. Type allocation and alignment can be
+// controlled using array traits.
+template <class MemberType, class Traits = ObjectArrayTraits>
 class Array {
  public:
-  Array(ScopeStack& scope, const size_t size) : size_(size), traits_(scope, size) {
+  Array(ScopeStack& scope, const size_t size) : size_(size), scope_(scope) {
+    items_ = Traits::template AllocateArray<MemberType>(scope_, size_);
+    stepsize_ = Traits::template CalcStepSize<MemberType>(scope_);
   }
 
   MX_FORCE_INLINE MemberType& operator[](const int32_t index) {
     MX_ASSERT(index < size_);
-    return traits_.GetItem(index);
+    return GetItem(index, stepsize_);
   }
 
   MX_FORCE_INLINE const MemberType& operator[](const int32_t index) const {
     MX_ASSERT(index < size_);
-    return traits_.GetItem(index);
+    return GetItem(index, stepsize_);
   }
 
   MX_FORCE_INLINE size_t size() const {
@@ -150,8 +120,19 @@ class Array {
   }
 
  private:
+  // Returns the array item at the given index. We can't just jump to a offset
+  // because we might need to skip alignment padding and finalizer objects.
+  MemberType& GetItem(const int32_t index, const size_t stepsize_bytes) {
+    uintptr_t base_address = reinterpret_cast<uintptr_t>(items_);
+    uintptr_t item_address = base_address + (index * stepsize_bytes);
+    MemberType* item = reinterpret_cast<MemberType*>(item_address);
+    return *item;
+  }
+
   size_t size_;
-  ArrayTraits traits_;
+  size_t stepsize_;
+  ScopeStack& scope_;
+  MemberType* items_;
 };
 
 }  // namespace mxcore
