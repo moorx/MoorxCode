@@ -55,17 +55,14 @@ env = conf.Finish()
 
 if sys.platform == 'darwin':
     env['CXXFLAGS'] = ['-Wall', '-fno-exceptions', '-fno-rtti']
+    if use_clang:
+        env['CXXFLAGS'].append(['-fcolor-diagnostics'])
 
     if mode == 'debug':
         env['CXXFLAGS'].append(['-g'])
-        if use_clang:
-            env['CXXFLAGS'].append(['-fcolor-diagnostics'])
         env['CPPDEFINES'] = ['_DEBUG']
     elif mode == 'release':
-        if use_clang:
-            env['CXXFLAGS'] = ['-O4']
-        else:
-            env['CXXFLAGS'] = ['-O3']
+        env['CXXFLAGS'].append('-O3')
 
 Export('env', 'mode')
 SConscript(['#/source/SConscript', '#/tests/SConscript'])
