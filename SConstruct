@@ -40,20 +40,23 @@ env = Environment(CPPPATH = ['#/include'],
                   LIBPATH = ['#'])
 use_clang = False
 
-conf = Configure(env, custom_tests = {'CheckCommand' : CheckCommand})
-if conf.CheckCommand('clang'):
-    use_clang = True
-    cc = 'clang'
-    cxx = 'clang++'
-    env['CC'] = [cc]
-    env['SHCC'] = [cc]
-    env['CXX'] = [cxx]
-    env['SHCXX'] = [cxx]
-    env['LINK'] = [cxx]
-    env['SHLINK'] = [cxx]
-env = conf.Finish()
+# try to use clang for debug builds on non-windows platforms
+if (not sys.platform == 'win32') and mode == 'debug':
+    conf = Configure(env, custom_tests = {'CheckCommand' : CheckCommand})
+    if conf.CheckCommand('clang'):
+        use_clang = True
+        cc = 'clang'
+        cxx = 'clang++'
+        env['CC'] = [cc]
+        env['SHCC'] = [cc]
+        env['CXX'] = [cxx]
+        env['SHCXX'] = [cxx]
+        env['LINK'] = [cxx]
+        env['SHLINK'] = [cxx]
+    env = conf.Finish()
 
-if sys.platform == 'darwin':
+# compiler flags
+if not sys.platform == 'win32':
     env['CXXFLAGS'] = ['-Wall', '-fno-exceptions', '-fno-rtti']
     if use_clang:
         env['CXXFLAGS'].append(['-fcolor-diagnostics'])
@@ -62,7 +65,7 @@ if sys.platform == 'darwin':
         env['CXXFLAGS'].append(['-g'])
         env['CPPDEFINES'] = ['_DEBUG']
     elif mode == 'release':
-        env['CXXFLAGS'].append('-O3')
+        env['CXXFLAGS'].append(['-O3', '-ffast-math'])
 
 Export('env', 'mode')
 SConscript(['#/source/SConscript', '#/tests/SConscript'])
