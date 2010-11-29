@@ -32,9 +32,9 @@
 #include "mxplatform.h"
 
 #ifndef MXBASE_VERSION
-  #define MXBASE_VERSION_STRING "0.00.00"
+  #define MXBASE_VERSION_STRING "0.01.00"
   #define MXBASE_VERSION_MAJOR 0
-  #define MXBASE_VERSION_MINOR 0
+  #define MXBASE_VERSION_MINOR 1
   #define MXBASE_VERSION_PATCH 0
 #endif
 
