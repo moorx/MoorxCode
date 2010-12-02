@@ -35,7 +35,6 @@
   #define MXCORE_VERSION_PATCH 0
 #endif
 
-#include "MXCore/array.h"
 #include "MXCore/linear_allocator.h"
 #include "MXCore/mxassert.h"
 #include "MXCore/raw_memory.h"
