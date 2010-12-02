@@ -37,12 +37,9 @@ namespace mxcore {
 // pointer that indicates the next free memory address upon every allocation.
 // Memory isn't freed specifically, instead the Rewind() function is used to
 // roll back the marker to a new memory address.
-// The base address has to be aligned for proper operation. See raw_memory.h for
-// aligned allocation functions.
 class LinearAllocator {
  public:
-  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size, 
-                                  size_t alignment = MX_ALIGNMENT_DEFAULT) 
+  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size, size_t alignment) 
       : kAlignment(alignment) {
     base_ = marker_ = reinterpret_cast<uint8_t*>(base);
     end_ = base_ + size;

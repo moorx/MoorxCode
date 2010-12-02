@@ -25,18 +25,20 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <MXCore/raw_memory.h>
+#include <MXCore/aligned_memory.h>
 #include <MXCore/linear_allocator.h>
 #include <MXCore/text_output.h>
 
 using namespace mxcore;
 
 int main() {
-  uint8_t* small_chunk = reinterpret_cast<uint8_t*>(AllocateAligned(1));
-  LinearAllocator small_allocator(small_chunk, 1);
+  AlignedMemory<1> small_chunk;
+  LinearAllocator small_allocator(small_chunk.pointer(), small_chunk.size(),
+                                  small_chunk.alignment());
 
-  uint8_t* big_chunk = reinterpret_cast<uint8_t*>(AllocateAligned(16535));
-  LinearAllocator big_allocator(big_chunk, 16535);
+  AlignedMemory<16535> big_chunk;
+  LinearAllocator big_allocator(big_chunk.pointer(), big_chunk.size(),
+                                big_chunk.alignment());
 
   small_allocator.Allocate(2);
 
@@ -52,9 +54,6 @@ int main() {
   Print("%d\n", marker_after - marker_before);
 
   big_allocator.Rewind(reinterpret_cast<uint8_t*>(marker_before - 1));
-
-  FreeAligned(big_chunk);
-  FreeAligned(small_chunk);
 
   return 0;
 }

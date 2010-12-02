@@ -35,9 +35,9 @@
   #define MXCORE_VERSION_PATCH 0
 #endif
 
+#include "MXCore/aligned_memory.h"
 #include "MXCore/linear_allocator.h"
 #include "MXCore/mxassert.h"
-#include "MXCore/raw_memory.h"
 #include "MXCore/scope_stack.h"
 #include "MXCore/smart_pointer.h"
 #include "MXCore/text_output.h"

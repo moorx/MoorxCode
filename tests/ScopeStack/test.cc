@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <MXCore/raw_memory.h>
+#include <MXCore/aligned_memory.h>
 #include <MXCore/linear_allocator.h>
 #include <MXCore/scope_stack.h>
 #include <MXCore/text_output.h>
@@ -46,8 +46,9 @@ struct Bar {
 
 int main()
 {
-  uint8_t* memory = reinterpret_cast<uint8_t*>(AllocateAligned(4096));
-  LinearAllocator allocator(memory, 4096);
+  AlignedMemory<4096> memory;
+  LinearAllocator allocator(memory.pointer(), memory.size(),
+                            memory.alignment());
   Print("%p\n", allocator.marker());
 
   {
@@ -74,7 +75,6 @@ int main()
   }
 
   Print("%p\n", allocator.marker());
-  FreeAligned(memory);
 
   return 0;
 }
