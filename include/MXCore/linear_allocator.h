@@ -39,25 +39,15 @@ namespace mxcore {
 // roll back the marker to a new memory address.
 class LinearAllocator {
  public:
-  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size, size_t alignment) 
-      : kAlignment(alignment) {
+  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size) {
     base_ = marker_ = reinterpret_cast<uint8_t*>(base);
     end_ = base_ + size;
-  }
-
-  // Ensures proper memory alignment. Increases size to the next multiple of
-  // kAlignment.
-  static MX_FORCE_INLINE size_t AlignSize(
-      const size_t size, 
-      const size_t alignment) {
-    return (size + (alignment - 1)) & ~(alignment - 1);
   }
 
   // Allocates size bytes from the memory pool.
   MX_FORCE_INLINE void* Allocate(const size_t size) {
     uint8_t* result = marker_;
-    size_t aligned_size = AlignSize(size, kAlignment);
-    marker_ += aligned_size;
+    marker_ += size;
     MX_ASSERT(marker_ <= end_);
     return result;
   }
@@ -68,10 +58,6 @@ class LinearAllocator {
     marker_ = reinterpret_cast<uint8_t*>(to);
   }
 
-  MX_FORCE_INLINE size_t alignment() const {
-    return kAlignment;
-  }
-
   MX_FORCE_INLINE void* marker() const {
     return marker_;
   }
@@ -80,7 +66,6 @@ class LinearAllocator {
   uint8_t* base_;
   uint8_t* marker_;
   uint8_t* end_;
-  const size_t kAlignment;
 };
 
 }  // namespace mxcore

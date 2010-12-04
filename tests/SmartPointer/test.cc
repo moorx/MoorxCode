@@ -52,8 +52,7 @@ void function1() {
   function2(b);
 }
 
-int main()
-{
+int main() {
   function1();
   return 0;
 }

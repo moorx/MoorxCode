@@ -44,11 +44,9 @@ struct Bar {
   float_t b_;
 };
 
-int main()
-{
+int main() {
   AlignedMemory<4096> memory;
-  LinearAllocator allocator(memory.pointer(), memory.size(),
-                            memory.alignment());
+  LinearAllocator allocator(memory.pointer(), memory.size());
   Print("%p\n", allocator.marker());
 
   {

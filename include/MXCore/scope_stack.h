@@ -95,25 +95,17 @@ class ScopeStack {
     return allocator_.Allocate(size);
   }
 
-  MX_FORCE_INLINE size_t alignment() const {
-    return allocator_.alignment();
-  }
-
  private:
   // Given a pointer to a finalizer, calculates the offset to the actual object
   // and returns it.
   MX_FORCE_INLINE void* GetObjectFromFinalizer(Finalizer* finalizer) const {
-    return reinterpret_cast<uint8_t*>(finalizer) + LinearAllocator::AlignSize(
-        sizeof(Finalizer), allocator_.alignment());
+    return reinterpret_cast<uint8_t*>(finalizer) + sizeof(Finalizer);
   }
 
   // To ensure a proper teardown, a Finalizer object is prepended to the actual
-  // object. Allocates enough memory for object and finalizer and guarantees
-  // proper alignment of both.
+  // object. Allocates enough memory for object and finalizer.
   MX_FORCE_INLINE Finalizer* AllocateWithFinalizer(const size_t size) const {
-    return reinterpret_cast<Finalizer*>(allocator_.Allocate(
-            size + LinearAllocator::AlignSize(sizeof(Finalizer), 
-                                              allocator_.alignment())));
+    return reinterpret_cast<Finalizer*>(allocator_.Allocate(size + sizeof(Finalizer)));
   }
 
   LinearAllocator& allocator_;
