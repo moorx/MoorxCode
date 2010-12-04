@@ -25,22 +25,22 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef MXCORE_MXCORE_H_
-#define MXCORE_MXCORE_H_
+#include <vector>
+#include <MXCore/mxcore.h>
 
-#ifndef MXCORE_VERSION
-  #define MXCORE_VERSION_STRING "0.00.00"
-  #define MXCORE_VERSION_MAJOR 0
-  #define MXCORE_VERSION_MINOR 0
-  #define MXCORE_VERSION_PATCH 0
-#endif
+using namespace mxcore;
 
-#include "MXCore/aligned_memory.h"
-#include "MXCore/linear_allocator.h"
-#include "MXCore/mxassert.h"
-#include "MXCore/scope_allocator.h"
-#include "MXCore/scope_stack.h"
-#include "MXCore/smart_pointer.h"
-#include "MXCore/text_output.h"
+class Foo {
+ public:
+  Foo() { mxcore::Print("constructing\n"); }
+  ~Foo() { mxcore::Print("destructing\n"); }
+};
 
-#endif  // MXCORE_MXCORE_H_
+int main() {
+  AlignedMemory<4096> memory;
+  LinearAllocator linear_allocator(memory.pointer(), memory.size());
+  ScopeStack scope(linear_allocator);
+  scope_allocator<Foo> stl_allocator(scope);
+  std::vector<Foo, scope_allocator<Foo> > foo(stl_allocator);
+  return 0;
+}
