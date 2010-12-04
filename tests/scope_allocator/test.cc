@@ -32,8 +32,8 @@ using namespace mxcore;
 
 class Foo {
  public:
-  Foo() { mxcore::Print("constructing\n"); }
-  ~Foo() { mxcore::Print("destructing\n"); }
+  Foo() { Print("constructing\n"); }
+  ~Foo() { Print("destructing\n"); }
 };
 
 int main() {
@@ -41,6 +41,7 @@ int main() {
   LinearAllocator linear_allocator(memory.pointer(), memory.size());
   ScopeStack scope(linear_allocator);
   scope_allocator<Foo> stl_allocator(scope);
-  std::vector<Foo, scope_allocator<Foo> > foo(stl_allocator);
+  std::vector<Foo, scope_allocator<Foo> > foo(5, Foo(), stl_allocator);
+  foo.push_back(Foo());
   return 0;
 }

@@ -31,9 +31,13 @@
 #include <new>
 #include "MXBase/mxbase.h"
 #include "MXCore/scope_stack.h"
+#include "MXCore/text_output.h"
 
 namespace mxcore {
 
+// An STL allocator that takes memory from a scope stack. Never deallocates
+// memory, but constructs and destructs allocated objects. Note that this might
+// not be 100% standards conform.
 template <class T>
 class scope_allocator {
  public:
@@ -57,15 +61,14 @@ class scope_allocator {
 
   pointer address(reference r) const { return &r; }
   const_pointer address(const_reference r) const { return &r; }
-  size_type max_size() const {}
-
+  size_type max_size() const { return scope_.size() / sizeof(value_type); }
+  
   pointer allocate(size_type n, const void* q = NULL) {
-    return scope_.NewRaw(); }
-
-  void construct(pointer p, const value_type& v) {
-    new(p) value_type(v);
+    return reinterpret_cast<pointer>(scope_.NewRaw(n * sizeof(value_type)));
   }
-  void destroy(pointer p) {}
+  
+  void construct(pointer p, const value_type& v) { new(p) value_type(v); }
+  void destroy(pointer p) { p->~value_type(); }
   void deallocate(pointer p, size_type t) {}
 
   ScopeStack& scope() const { return scope_; }
@@ -75,6 +78,7 @@ class scope_allocator {
   ScopeStack& scope_;
 };
 
+// To be more standards-conforming, we need this specialization.
 template <>
 class scope_allocator<void>
 {

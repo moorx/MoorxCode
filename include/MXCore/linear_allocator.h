@@ -39,7 +39,7 @@ namespace mxcore {
 // roll back the marker to a new memory address.
 class LinearAllocator {
  public:
-  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size) {
+  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size) : kSize(size) {
     base_ = marker_ = reinterpret_cast<uint8_t*>(base);
     end_ = base_ + size;
   }
@@ -62,7 +62,12 @@ class LinearAllocator {
     return marker_;
   }
 
+  MX_FORCE_INLINE size_t size() const {
+    return kSize;
+  }
+
  private:
+  const size_t kSize;
   uint8_t* base_;
   uint8_t* marker_;
   uint8_t* end_;
