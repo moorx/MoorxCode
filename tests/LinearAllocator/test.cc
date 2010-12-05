@@ -32,10 +32,10 @@
 using namespace mxcore;
 
 int main() {
-  AlignedMemory<1> small_chunk;
+  AlignedMemory<8> small_chunk(1);
   LinearAllocator small_allocator(small_chunk.pointer(), small_chunk.size());
 
-  AlignedMemory<16535> big_chunk;
+  AlignedMemory<8> big_chunk(4096);
   LinearAllocator big_allocator(big_chunk.pointer(), big_chunk.size());
 
   small_allocator.Allocate(2);

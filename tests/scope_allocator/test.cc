@@ -37,7 +37,7 @@ class Foo {
 };
 
 int main() {
-  AlignedMemory<4096> memory;
+  AlignedMemory<8> memory(4096);
   LinearAllocator linear_allocator(memory.pointer(), memory.size());
   ScopeStack scope(linear_allocator);
   scope_allocator<Foo> stl_allocator(scope);

@@ -32,30 +32,29 @@
 #include "MXCore/mxtypes.h"
 #include "MXCore/mxassert.h"
 
-#define MX_ALIGNMENT_DEFAULT 16
-
 namespace mxcore {
 
 // A chunk of aligned memory.
-template <const size_t kSize, const size_t kAlignment = MX_ALIGNMENT_DEFAULT>
+template <const size_t kAlignment>
 class AlignedMemory {
  public:
-  AlignedMemory();
+  AlignedMemory(const size_t size);
   ~AlignedMemory();
 
-  size_t size() const { return kSize; }
+  size_t size() const { return size_; }
   size_t alignment() const { return kAlignment; }
   void* pointer() const { return pointer_; }
 
  private:
-  AlignedMemory(const AlignedMemory<kSize, kAlignment>& other) {}
-  AlignedMemory& operator=(const AlignedMemory<kSize, kAlignment>& other) {}
+  AlignedMemory(const AlignedMemory<kAlignment>& other) {}
+  AlignedMemory& operator=(const AlignedMemory<kAlignment>& other) {}
   void* pointer_;
+  const size_t size_;
 };
 
-template <const size_t kSize, const size_t kAlignment>
-AlignedMemory<kSize, kAlignment>::AlignedMemory() {
-  uintptr_t raw_address = reinterpret_cast<uintptr_t>(malloc(kSize + kAlignment));
+template <const size_t kAlignment>
+AlignedMemory<kAlignment>::AlignedMemory(const size_t size) : size_(size) {
+  uintptr_t raw_address = reinterpret_cast<uintptr_t>(malloc(size_ + kAlignment));
 
   uintptr_t mask = kAlignment - 1;
   size_t misalignment = raw_address & mask;
@@ -70,8 +69,8 @@ AlignedMemory<kSize, kAlignment>::AlignedMemory() {
   pointer_ = reinterpret_cast<void*>(aligned_address);
 }
 
-template <const size_t kSize, const size_t kAlignment>
-AlignedMemory<kSize, kAlignment>::~AlignedMemory() {
+template <const size_t kAlignment>
+AlignedMemory<kAlignment>::~AlignedMemory() {
   uintptr_t aligned_address = reinterpret_cast<uintptr_t>(pointer_);
   size_t* adjustment_pointer = reinterpret_cast<size_t*>(
       aligned_address - sizeof(size_t));
