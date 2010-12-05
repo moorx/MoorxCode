@@ -30,7 +30,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 
 namespace mxcore {
 

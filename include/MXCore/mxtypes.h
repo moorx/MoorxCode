@@ -25,16 +25,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef MXCORE_MXCORE_H_
-#define MXCORE_MXCORE_H_
+#ifndef MXCORE_MXTYPES_H_
+#define MXCORE_MXTYPES_H_
 
-#include "MXCore/aligned_memory.h"
-#include "MXCore/linear_allocator.h"
-#include "MXCore/mxassert.h"
-#include "MXCore/mxtypes.h"
-#include "MXCore/scope_allocator.h"
-#include "MXCore/scope_stack.h"
-#include "MXCore/smart_pointer.h"
-#include "MXCore/text_output.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <float.h>
+#include <math.h>
 
-#endif  // MXCORE_MXCORE_H_
+typedef char char8_t;
+
+#endif  // MXCORE_MXTYPES_H_

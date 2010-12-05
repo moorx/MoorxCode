@@ -29,8 +29,10 @@
 #define MXCORE_ALIGNED_MEMORY_H_
 
 #include <stdlib.h>
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 #include "MXCore/mxassert.h"
+
+#define MX_ALIGNMENT_DEFAULT 16
 
 namespace mxcore {
 
@@ -41,9 +43,9 @@ class AlignedMemory {
   AlignedMemory();
   ~AlignedMemory();
 
-  MX_FORCE_INLINE size_t size() const { return kSize; }
-  MX_FORCE_INLINE size_t alignment() const { return kAlignment; }
-  MX_FORCE_INLINE void* pointer() const { return pointer_; }
+  size_t size() const { return kSize; }
+  size_t alignment() const { return kAlignment; }
+  void* pointer() const { return pointer_; }
 
  private:
   AlignedMemory(const AlignedMemory<kSize, kAlignment>& other) {}
@@ -60,7 +62,7 @@ AlignedMemory<kSize, kAlignment>::AlignedMemory() {
   size_t adjustment = kAlignment - misalignment;
   uintptr_t aligned_address = raw_address + adjustment;
 
-  MX_ASSERT(kAlignment >= sizeof(adjustment));
+  MxAssert(kAlignment >= sizeof(adjustment));
   size_t* adjustment_pointer = reinterpret_cast<size_t*>(
       aligned_address - sizeof(adjustment));
   *adjustment_pointer = adjustment;

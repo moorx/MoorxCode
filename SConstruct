@@ -57,13 +57,13 @@ if (not sys.platform == 'win32') and mode == 'debug':
 
 # compiler flags
 if not sys.platform == 'win32':
-    env['CXXFLAGS'] = ['-Wall']
+    env['CXXFLAGS'] = ['-Wall', '-pedantic']
     if use_clang:
         env['CXXFLAGS'].append(['-fcolor-diagnostics'])
 
     if mode == 'debug':
         env['CXXFLAGS'].append(['-g'])
-        env['CPPDEFINES'] = ['_DEBUG']
+        env['CPPDEFINES'] = ['_DEBUG', '_ASSERT']
     elif mode == 'release':
         env['CXXFLAGS'].append(['-O3', '-ffast-math'])
 

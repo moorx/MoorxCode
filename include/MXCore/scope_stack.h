@@ -29,7 +29,7 @@
 #define MXCORE_SCOPE_STACK_H_
 
 #include <new>
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 #include "MXCore/linear_allocator.h"
 
 namespace mxcore {
@@ -54,7 +54,7 @@ void CallDestructor(void* data) {
 // have to live on the stack!
 class ScopeStack {
  public:
-  explicit MX_FORCE_INLINE ScopeStack(LinearAllocator& allocator)
+  explicit  ScopeStack(LinearAllocator& allocator)
       : allocator_(allocator),
         base_(allocator.marker()),
         finalizer_chain_(NULL) {
@@ -71,7 +71,7 @@ class ScopeStack {
   // Allocates and constructs an object and adds a call to the desctructor to
   // the front of the finalizer chain.
   template <class T>
-  MX_FORCE_INLINE T* NewWithFinalizer() {
+   T* NewWithFinalizer() {
     Finalizer* finalizer = AllocateWithFinalizer(sizeof(T));
     T* result = new(GetObjectFromFinalizer(finalizer)) T;
 
@@ -86,27 +86,27 @@ class ScopeStack {
   // finalizer list. Use this for structs and objects that don't need to clean
   // up.
   template <class T>
-  MX_FORCE_INLINE T* NewObject() const {
+   T* NewObject() const {
     return new(allocator_.Allocate(sizeof(T))) T;
   }
 
   // Allocate a chunk of raw memory from the underlying linear allocator.
-  MX_FORCE_INLINE void* NewRaw(const size_t size) const {
+   void* NewRaw(const size_t size) const {
     return allocator_.Allocate(size);
   }
 
-  MX_FORCE_INLINE size_t size() const { return allocator_.size(); }
+   size_t size() const { return allocator_.size(); }
 
  private:
   // Given a pointer to a finalizer, calculates the offset to the actual object
   // and returns it.
-  MX_FORCE_INLINE void* GetObjectFromFinalizer(Finalizer* finalizer) const {
+   void* GetObjectFromFinalizer(Finalizer* finalizer) const {
     return reinterpret_cast<uint8_t*>(finalizer) + sizeof(Finalizer);
   }
 
   // To ensure a proper teardown, a Finalizer object is prepended to the actual
   // object. Allocates enough memory for object and finalizer.
-  MX_FORCE_INLINE Finalizer* AllocateWithFinalizer(const size_t size) const {
+   Finalizer* AllocateWithFinalizer(const size_t size) const {
     return reinterpret_cast<Finalizer*>(allocator_.Allocate(size + sizeof(Finalizer)));
   }
 

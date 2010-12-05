@@ -28,7 +28,7 @@
 #ifndef MXCORE_LINEAR_ALLOCATOR_H_
 #define MXCORE_LINEAR_ALLOCATOR_H_
 
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 #include "MXCore/mxassert.h"
 
 namespace mxcore {
@@ -39,32 +39,27 @@ namespace mxcore {
 // roll back the marker to a new memory address.
 class LinearAllocator {
  public:
-  MX_FORCE_INLINE LinearAllocator(void* base, const size_t size) : kSize(size) {
+   LinearAllocator(void* base, const size_t size) : kSize(size) {
     base_ = marker_ = reinterpret_cast<uint8_t*>(base);
     end_ = base_ + size;
   }
 
   // Allocates size bytes from the memory pool.
-  MX_FORCE_INLINE void* Allocate(const size_t size) {
+   void* Allocate(const size_t size) {
     uint8_t* result = marker_;
     marker_ += size;
-    MX_ASSERT(marker_ <= end_);
+    MxAssert(marker_ <= end_);
     return result;
   }
 
   // Resets the marker to an arbitrary position within the pool's boundaries.
-  MX_FORCE_INLINE void Rewind(void* to) {
-    MX_ASSERT((to >= base_) && (to <= end_));
+   void Rewind(void* to) {
+    MxAssert((to >= base_) && (to <= end_));
     marker_ = reinterpret_cast<uint8_t*>(to);
   }
 
-  MX_FORCE_INLINE void* marker() const {
-    return marker_;
-  }
-
-  MX_FORCE_INLINE size_t size() const {
-    return kSize;
-  }
+   void* marker() const { return marker_; }
+   size_t size() const { return kSize; }
 
  private:
   const size_t kSize;

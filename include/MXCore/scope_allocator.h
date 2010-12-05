@@ -29,7 +29,7 @@
 #define MXCORE_SCOPE_ALLOCATOR_H_
 
 #include <new>
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 #include "MXCore/scope_stack.h"
 #include "MXCore/text_output.h"
 

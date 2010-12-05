@@ -28,7 +28,7 @@
 #ifndef MXCORE_MXASSERT_H_
 #define MXCORE_MXASSERT_H_
 
-#include "MXBase/mxbase.h"
+#include "MXCore/mxtypes.h"
 
 namespace mxcore {
 namespace internal {
@@ -39,17 +39,10 @@ void FailAssertion(const char8_t* expression, const char8_t* file,
 }  // namespace internal
 }  // namespace mxcore
 
-#ifdef MX_ASSERT_ENABLED
-  #undef MX_ASSERT_ENABLED
-  #define MX_ASSERT_ENABLED 1
+#ifdef _ASSERT
+  #define MxAssert(expression) (void)((expression) || (mxcore::internal::FailAssertion(#expression, __FILE__, __LINE__), 0))
 #else
-  #define MX_ASSERT_ENABLED MX_DEBUG
-#endif
-
-#if MX_ASSERT_ENABLED
-  #define MX_ASSERT(expression) (void)((expression) || (mxcore::internal::FailAssertion(#expression, __FILE__, __LINE__), 0))
-#else
-  #define MX_ASSERT(expression)
+  #define MxAssert(expression)
 #endif
 
 #endif  // MXCORE_MXASSERT_H_
