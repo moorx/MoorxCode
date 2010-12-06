@@ -26,4 +26,4 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Import('env', 'mode')
-env.Library('#/mxcore', Glob('*.cc'))
+#env.Library('#/mxcore', Glob('*.cc'))

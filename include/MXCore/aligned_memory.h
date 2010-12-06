@@ -28,9 +28,9 @@
 #ifndef MXCORE_ALIGNED_MEMORY_H_
 #define MXCORE_ALIGNED_MEMORY_H_
 
+#include <assert.h>
 #include <stdlib.h>
 #include "MXCore/mxtypes.h"
-#include "MXCore/mxassert.h"
 
 namespace mxcore {
 
@@ -61,7 +61,7 @@ AlignedMemory<kAlignment>::AlignedMemory(const size_t size) : size_(size) {
   size_t adjustment = kAlignment - misalignment;
   uintptr_t aligned_address = raw_address + adjustment;
 
-  MxAssert(kAlignment >= sizeof(adjustment));
+  assert(kAlignment >= sizeof(adjustment));
   size_t* adjustment_pointer = reinterpret_cast<size_t*>(
       aligned_address - sizeof(adjustment));
   *adjustment_pointer = adjustment;

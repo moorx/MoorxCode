@@ -25,9 +25,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <stdio.h>
 #include <MXCore/aligned_memory.h>
 #include <MXCore/linear_allocator.h>
-#include <MXCore/text_output.h>
 
 using namespace mxcore;
 
@@ -42,14 +42,14 @@ int main() {
 
   uintptr_t marker_before = reinterpret_cast<uintptr_t>(
       big_allocator.marker());
-  Print("big_allocator.marker() = %p\n", big_allocator.marker());
+  printf("big_allocator.marker() = %p\n", big_allocator.marker());
 
   uint32_t* data = reinterpret_cast<uint32_t*>(big_allocator.Allocate(
           sizeof(uint32_t) * 613));
   
   uintptr_t marker_after = reinterpret_cast<uintptr_t>(big_allocator.marker());
-  Print("big_allocator.marker() = %p\n", big_allocator.marker());
-  Print("%d\n", marker_after - marker_before);
+  printf("big_allocator.marker() = %p\n", big_allocator.marker());
+  printf("%lu\n", marker_after - marker_before);
 
   big_allocator.Rewind(reinterpret_cast<uint8_t*>(marker_before - 1));
 

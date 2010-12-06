@@ -25,7 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <MXCore/text_output.h>
+#include <stdio.h>
 #include <MXCore/smart_pointer.h>
 
 using namespace mxcore;
@@ -33,11 +33,11 @@ using namespace mxcore;
 class Foo {
  public:
   Foo() {
-    Print("constructing\n");
+    printf("constructing\n");
   }
 
   ~Foo() {
-    Print("destructing\n");
+    printf("destructing\n");
   }
 };
 

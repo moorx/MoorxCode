@@ -28,8 +28,8 @@
 #ifndef MXCORE_LINEAR_ALLOCATOR_H_
 #define MXCORE_LINEAR_ALLOCATOR_H_
 
+#include <assert.h>
 #include "MXCore/mxtypes.h"
-#include "MXCore/mxassert.h"
 
 namespace mxcore {
 
@@ -48,13 +48,13 @@ class LinearAllocator {
    void* Allocate(const size_t size) {
     uint8_t* result = marker_;
     marker_ += size;
-    MxAssert(marker_ <= end_);
+    assert(marker_ <= end_);
     return result;
   }
 
   // Resets the marker to an arbitrary position within the pool's boundaries.
    void Rewind(void* to) {
-    MxAssert((to >= base_) && (to <= end_));
+    assert((to >= base_) && (to <= end_));
     marker_ = reinterpret_cast<uint8_t*>(to);
   }
 

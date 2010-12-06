@@ -26,4 +26,4 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Import('env', 'mode')
-env.Program('test.cc', LIBS = ['mxcore'])
+env.Program('test.cc')

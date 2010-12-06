@@ -30,11 +30,9 @@
 
 #include "MXCore/aligned_memory.h"
 #include "MXCore/linear_allocator.h"
-#include "MXCore/mxassert.h"
 #include "MXCore/mxtypes.h"
 #include "MXCore/scope_allocator.h"
 #include "MXCore/scope_stack.h"
 #include "MXCore/smart_pointer.h"
-#include "MXCore/text_output.h"
 
 #endif  // MXCORE_MXCORE_H_

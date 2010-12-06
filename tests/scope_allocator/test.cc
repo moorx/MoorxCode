@@ -26,14 +26,15 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <vector>
+#include <stdio.h>
 #include <MXCore/mxcore.h>
 
 using namespace mxcore;
 
 class Foo {
  public:
-  Foo() { Print("constructing\n"); }
-  ~Foo() { Print("destructing\n"); }
+  Foo() { printf("constructing\n"); }
+  ~Foo() { printf("destructing\n"); }
 };
 
 int main() {

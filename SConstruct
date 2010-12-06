@@ -63,9 +63,10 @@ if not sys.platform == 'win32':
 
     if mode == 'debug':
         env['CXXFLAGS'].append(['-g'])
-        env['CPPDEFINES'] = ['_DEBUG', '_ASSERT']
+        env['CPPDEFINES'] = ['_DEBUG']
     elif mode == 'release':
         env['CXXFLAGS'].append(['-O3', '-ffast-math'])
+        env['CPPDEFINES'] = ['NDEBUG']
 
 Export('env', 'mode')
 SConscript(['#/source/SConscript', '#/tests/SConscript'])

@@ -31,7 +31,6 @@
 #include <new>
 #include "MXCore/mxtypes.h"
 #include "MXCore/scope_stack.h"
-#include "MXCore/text_output.h"
 
 namespace mxcore {
 

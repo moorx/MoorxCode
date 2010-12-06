@@ -25,17 +25,17 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <stdio.h>
 #include <MXCore/aligned_memory.h>
 #include <MXCore/linear_allocator.h>
 #include <MXCore/scope_stack.h>
-#include <MXCore/text_output.h>
 
 using namespace mxcore;
 
 class Foo {
  public:
-  Foo() { Print("Foo()\n"); }
-  ~Foo() { Print("~Foo()\n"); }
+  Foo() { printf("Foo()\n"); }
+  ~Foo() { printf("~Foo()\n"); }
  private:
   int32_t f_;
 };
@@ -47,7 +47,7 @@ struct Bar {
 int main() {
   AlignedMemory<8> memory(4096);
   LinearAllocator allocator(memory.pointer(), memory.size());
-  Print("%p\n", allocator.marker());
+  printf("%p\n", allocator.marker());
 
   {
     Foo* foos[10];
@@ -57,8 +57,8 @@ int main() {
     }
 
     {
-      Print("entering inside\n");
-      Print("%p\n", allocator.marker());
+      printf("entering inside\n");
+      printf("%p\n", allocator.marker());
 
       ScopeStack inner_scope(allocator);
       Bar* bars[10];
@@ -66,13 +66,13 @@ int main() {
         bars[i] = inner_scope.NewObject<Bar>();
       }
 
-      Print("%p\n", allocator.marker());
-      Print("leaving inside\n");
+      printf("%p\n", allocator.marker());
+      printf("leaving inside\n");
     }
-    Print("%p\n", allocator.marker());
+    printf("%p\n", allocator.marker());
   }
 
-  Print("%p\n", allocator.marker());
+  printf("%p\n", allocator.marker());
 
   return 0;
 }
