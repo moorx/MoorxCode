@@ -29,8 +29,8 @@
 #define MXCORE_ALIGNED_MEMORY_H_
 
 #include <assert.h>
-#include <stdlib.h>
 #include "MXCore/mxtypes.h"
+#include "MXCore/memory_tracker.h"
 
 namespace mxcore {
 
@@ -54,7 +54,8 @@ class AlignedMemory {
 
 template <const size_t kAlignment>
 AlignedMemory<kAlignment>::AlignedMemory(const size_t size) : size_(size) {
-  uintptr_t raw_address = reinterpret_cast<uintptr_t>(malloc(size_ + kAlignment));
+  uintptr_t raw_address = reinterpret_cast<uintptr_t>(
+      mxalloc(size_ + kAlignment));
 
   uintptr_t mask = kAlignment - 1;
   size_t misalignment = raw_address & mask;
@@ -75,7 +76,7 @@ AlignedMemory<kAlignment>::~AlignedMemory() {
   size_t* adjustment_pointer = reinterpret_cast<size_t*>(
       aligned_address - sizeof(size_t));
   size_t adjustment = *adjustment_pointer;
-  free(reinterpret_cast<void*>(aligned_address - adjustment));
+  mxfree(reinterpret_cast<void*>(aligned_address - adjustment));
 }
 
 }  // namespace mxcore

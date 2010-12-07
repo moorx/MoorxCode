@@ -25,15 +25,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef MXCORE_MXCORE_H_
-#define MXCORE_MXCORE_H_
+#include <MXCore/mxcore.h>
 
-#include "MXCore/aligned_memory.h"
-#include "MXCore/linear_allocator.h"
-#include "MXCore/memory_tracker.h"
-#include "MXCore/mxtypes.h"
-#include "MXCore/scope_allocator.h"
-#include "MXCore/scope_stack.h"
-#include "MXCore/smart_pointer.h"
+class Foo {
+  int f_;
+};
 
-#endif  // MXCORE_MXCORE_H_
+int main(void) {
+  void* raw = mxalloc(4096);
+  Foo* foo = mxnew(Foo, ());
+  Foo* lots_of_foo = mxnew_array(Foo, 42);
+
+  mxcore::MemoryTracker::Report();
+  assert(mxcore::MemoryTracker::bytes_allocated() == 4268);
+  printf("bytes allocated: %lu\n", mxcore::MemoryTracker::bytes_allocated());
+
+  mxfree(raw);
+  mxdelete(foo);
+  mxdelete_array(lots_of_foo);
+
+  mxcore::MemoryTracker::Report();
+
+  return 0;
+}
