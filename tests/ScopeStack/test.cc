@@ -30,7 +30,7 @@
 #include <mxcore/linear_allocator.h>
 #include <mxcore/scope_stack.h>
 
-using namespace mxcore;
+using namespace mx::core;
 
 class Foo {
  public:

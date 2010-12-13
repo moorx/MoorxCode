@@ -32,7 +32,8 @@
 #include "mxcore/mxtypes.h"
 #include "mxcore/memory_tracker.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 // A chunk of aligned memory.
 template <const size_t kAlignment>
@@ -79,6 +80,7 @@ AlignedMemory<kAlignment>::~AlignedMemory() {
   mxfree(reinterpret_cast<void*>(aligned_address - adjustment));
 }
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #endif  // MXCORE_ALIGNED_MEMORY_H_

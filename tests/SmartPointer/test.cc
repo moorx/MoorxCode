@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <mxcore/smart_pointer.h>
 
-using namespace mxcore;
+using namespace mx::core;
 
 class Foo {
  public:

@@ -36,15 +36,15 @@ int main(void) {
   Foo* foo = mxnew(Foo, ());
   Foo* lots_of_foo = mxnew_array(Foo, 42);
 
-  mxcore::MemoryTracker::Report();
-  assert(mxcore::MemoryTracker::bytes_allocated() == 4268);
-  printf("bytes allocated: %lu\n", mxcore::MemoryTracker::bytes_allocated());
+  mx::core::MemoryTracker::Report();
+  assert(mx::core::MemoryTracker::bytes_allocated() == 4268);
+  printf("bytes allocated: %lu\n", mx::core::MemoryTracker::bytes_allocated());
 
   mxfree(raw);
   mxdelete(foo);
   mxdelete_array(lots_of_foo);
 
-  mxcore::MemoryTracker::Report();
+  mx::core::MemoryTracker::Report();
 
   return 0;
 }

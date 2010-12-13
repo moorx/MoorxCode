@@ -32,7 +32,8 @@
 #include "mxcore/mxtypes.h"
 #include "mxcore/linear_allocator.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 // A finalizer is prepended to every object allocated from the memory pool.
 // Before rewinding allocated memory, ScopeStack iterates over all finalizers,
@@ -115,6 +116,7 @@ class ScopeStack {
   Finalizer* finalizer_chain_;
 };
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #endif  // MXCORE_SCOPE_STACK_H_

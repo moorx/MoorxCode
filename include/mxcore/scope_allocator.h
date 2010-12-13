@@ -32,7 +32,8 @@
 #include "mxcore/mxtypes.h"
 #include "mxcore/scope_stack.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 // An STL allocator that takes memory from a scope stack. Never deallocates
 // memory, but constructs and destructs allocated objects. Note that this might
@@ -105,6 +106,7 @@ bool operator!=(const scope_allocator<T1>& a, const scope_allocator<T2>& b) {
   return !(a == b);
 }
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #endif  // MXCORE_SCOPE_ALLOCATOR_H_

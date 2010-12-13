@@ -28,7 +28,8 @@
 #include <assert.h>
 #include "mxcore/linear_allocator.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 LinearAllocator::LinearAllocator(void* base, const size_t size) : size_(size) {
   base_ = marker_ = reinterpret_cast<uint8_t*>(base);
@@ -47,4 +48,5 @@ void LinearAllocator::Rewind(void* to) {
   marker_ = reinterpret_cast<uint8_t*>(to);
 }
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx

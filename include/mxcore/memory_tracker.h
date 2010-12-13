@@ -32,7 +32,8 @@
 #include <tr1/unordered_map>
 #include "mxcore/mxtypes.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 namespace internal {
 
@@ -89,32 +90,33 @@ class MemoryTracker {
   static AllocationMap allocations_;
 };
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #ifdef _DEBUG
   #define mxnew(type, constructor) reinterpret_cast< type *>( \
-      mxcore::MemoryTracker::Add(mxcore::internal::Allocation(new type constructor, \
-                                                              __FILE__, \
-                                                              __LINE__, \
-                                                              sizeof( type ))))
-  #define mxdelete(pointer) { if (!mxcore::MemoryTracker::Remove( \
-              mxcore::MemoryTracker::Delete((pointer)))) assert(false && #pointer); }
+      mx::core::MemoryTracker::Add(mx::core::internal::Allocation(new type constructor, \
+                                                                  __FILE__, \
+                                                                  __LINE__, \
+                                                                  sizeof( type ))))
+  #define mxdelete(pointer) { if (!mx::core::MemoryTracker::Remove( \
+              mx::core::MemoryTracker::Delete((pointer)))) assert(false && #pointer); }
 
   #define mxnew_array(type, size) reinterpret_cast< type *>( \
-      mxcore::MemoryTracker::Add(mxcore::internal::Allocation(new type [ size ], \
-                                                              __FILE__, \
-                                                              __LINE__, \
-                                                              sizeof( type ) * (size))))
-  #define mxdelete_array(pointer) { if (!mxcore::MemoryTracker::Remove( \
-              mxcore::MemoryTracker::DeleteArray((pointer)))) assert(false && #pointer); }
+      mx::core::MemoryTracker::Add(mx::core::internal::Allocation(new type [ size ], \
+                                                                  __FILE__, \
+                                                                  __LINE__, \
+                                                                  sizeof( type ) * (size))))
+  #define mxdelete_array(pointer) { if (!mx::core::MemoryTracker::Remove( \
+              mx::core::MemoryTracker::DeleteArray((pointer)))) assert(false && #pointer); }
   
-  #define mxalloc(size) mxcore::MemoryTracker::Add(mxcore::internal::Allocation( \
+  #define mxalloc(size) mx::core::MemoryTracker::Add(mx::core::internal::Allocation( \
           malloc((size)), __FILE__, __LINE__, (size)))
-  #define mxfree(pointer) { if (!mxcore::MemoryTracker::Remove( \
-              mxcore::MemoryTracker::Free((pointer)))) assert(false && #pointer); }
+  #define mxfree(pointer) { if (!mx::core::MemoryTracker::Remove( \
+              mx::core::MemoryTracker::Free((pointer)))) assert(false && #pointer); }
 #else
   #define mxnew(type, constructor) new type constructor
-  #define mxdelete(pointer) delete (pointer)
+  #define mxdelete(pointer) delete pointer
 
   #define mxnew_array(type, size) new type [ size ]
   #define mxdelete_array(pointer) delete[] pointer

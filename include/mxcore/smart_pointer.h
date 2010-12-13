@@ -30,7 +30,8 @@
 
 #include "mxcore/mxtypes.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 // Smart pointer class. Keeps track of all references to a pointer and deletes
 // the pointee after the last SmartPointer referencing falls out of scope. This
@@ -123,6 +124,7 @@ class SmartPointer {
   SmartPointer<T>* previous_;
 };
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #endif  // MXCORE_SMART_POINTER_H_

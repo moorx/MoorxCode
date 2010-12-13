@@ -29,7 +29,7 @@
 #include <mxcore/aligned_memory.h>
 #include <mxcore/linear_allocator.h>
 
-using namespace mxcore;
+using namespace mx::core;
 
 int main() {
   AlignedMemory<8> small_chunk(1);

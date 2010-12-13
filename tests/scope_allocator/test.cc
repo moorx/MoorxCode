@@ -29,7 +29,7 @@
 #include <stdio.h>
 #include <mxcore/mxcore.h>
 
-using namespace mxcore;
+using namespace mx::core;
 
 class Foo {
  public:

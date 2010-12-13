@@ -30,7 +30,8 @@
 
 #include "mxcore/mxtypes.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 // Linear memory allocator. Takes a given chunk of memory and increments a marker
 // pointer that indicates the next free memory address upon every allocation.
@@ -56,6 +57,7 @@ class LinearAllocator {
   uint8_t* end_;
 };
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
 
 #endif  // MXCORE_LINEAR_ALLOCATOR_H_

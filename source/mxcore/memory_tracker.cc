@@ -27,7 +27,8 @@
 
 #include "mxcore/memory_tracker.h"
 
-namespace mxcore {
+namespace mx {
+namespace core {
 
 namespace internal {
 
@@ -77,4 +78,5 @@ void MemoryTracker::Report() {
   printf("*** MEMORY REPORT ***\n");
 }
 
-}  // namespace mxcore
+}  // namespace core
+}  // namespace mx
