@@ -57,7 +57,7 @@ if (not sys.platform == 'win32') and mode == 'debug':
 
 # compiler flags
 if not sys.platform == 'win32':
-    env['CXXFLAGS'] = ['-Wall', '-pedantic']
+    env['CXXFLAGS'] = ['-Wall']
     if use_clang:
         env['CXXFLAGS'].append(['-fcolor-diagnostics'])
 
