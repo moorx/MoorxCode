@@ -27,7 +27,7 @@
 
 #include <vector>
 #include <stdio.h>
-#include <MXCore/mxcore.h>
+#include <mxcore/mxcore.h>
 
 using namespace mxcore;
 

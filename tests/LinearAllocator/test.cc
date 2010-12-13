@@ -26,8 +26,8 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
-#include <MXCore/aligned_memory.h>
-#include <MXCore/linear_allocator.h>
+#include <mxcore/aligned_memory.h>
+#include <mxcore/linear_allocator.h>
 
 using namespace mxcore;
 

@@ -29,8 +29,8 @@
 #define MXCORE_SCOPE_STACK_H_
 
 #include <new>
-#include "MXCore/mxtypes.h"
-#include "MXCore/linear_allocator.h"
+#include "mxcore/mxtypes.h"
+#include "mxcore/linear_allocator.h"
 
 namespace mxcore {
 

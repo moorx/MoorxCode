@@ -30,7 +30,7 @@
 
 #include <assert.h>
 #include <tr1/unordered_map>
-#include "MXCore/mxtypes.h"
+#include "mxcore/mxtypes.h"
 
 namespace mxcore {
 

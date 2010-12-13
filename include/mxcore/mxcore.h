@@ -25,26 +25,15 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <assert.h>
-#include "MXCore/linear_allocator.h"
+#ifndef MXCORE_MXCORE_H_
+#define MXCORE_MXCORE_H_
 
-namespace mxcore {
+#include "mxcore/aligned_memory.h"
+#include "mxcore/linear_allocator.h"
+#include "mxcore/memory_tracker.h"
+#include "mxcore/mxtypes.h"
+#include "mxcore/scope_allocator.h"
+#include "mxcore/scope_stack.h"
+#include "mxcore/smart_pointer.h"
 
-LinearAllocator::LinearAllocator(void* base, const size_t size) : size_(size) {
-  base_ = marker_ = reinterpret_cast<uint8_t*>(base);
-  end_ = base_ + size;
-}
-
-void* LinearAllocator::Allocate(const size_t size) {
-  uint8_t* result = marker_;
-  marker_ += size;
-  assert(marker_ <= end_);
-  return result;
-}
-
-void LinearAllocator::Rewind(void* to) {
-  assert((to >= base_) && (to <= end_));
-  marker_ = reinterpret_cast<uint8_t*>(to);
-}
-
-}  // namespace mxcore
+#endif  // MXCORE_MXCORE_H_

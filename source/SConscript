@@ -27,4 +27,4 @@
 
 Import('env', 'mode')
 Export('env', 'mode')
-SConscript(['MXCore/SConscript'])
+SConscript(['mxcore/SConscript'])

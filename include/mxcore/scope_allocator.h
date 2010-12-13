@@ -29,8 +29,8 @@
 #define MXCORE_SCOPE_ALLOCATOR_H_
 
 #include <new>
-#include "MXCore/mxtypes.h"
-#include "MXCore/scope_stack.h"
+#include "mxcore/mxtypes.h"
+#include "mxcore/scope_stack.h"
 
 namespace mxcore {
 

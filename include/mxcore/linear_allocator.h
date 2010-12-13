@@ -25,15 +25,37 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef MXCORE_MXCORE_H_
-#define MXCORE_MXCORE_H_
+#ifndef MXCORE_LINEAR_ALLOCATOR_H_
+#define MXCORE_LINEAR_ALLOCATOR_H_
 
-#include "MXCore/aligned_memory.h"
-#include "MXCore/linear_allocator.h"
-#include "MXCore/memory_tracker.h"
-#include "MXCore/mxtypes.h"
-#include "MXCore/scope_allocator.h"
-#include "MXCore/scope_stack.h"
-#include "MXCore/smart_pointer.h"
+#include "mxcore/mxtypes.h"
 
-#endif  // MXCORE_MXCORE_H_
+namespace mxcore {
+
+// Linear memory allocator. Takes a given chunk of memory and increments a marker
+// pointer that indicates the next free memory address upon every allocation.
+// Memory isn't freed specifically, instead the Rewind() function is used to
+// roll back the marker to a new memory address.
+class LinearAllocator {
+ public:
+   LinearAllocator(void* base, const size_t size);
+
+  // Allocates size bytes from the memory pool.
+   void* Allocate(const size_t size);
+
+  // Resets the marker to an arbitrary position within the pool's boundaries.
+   void Rewind(void* to);
+
+   void* marker() const { return marker_; }
+   size_t size() const { return size_; }
+
+ private:
+  const size_t size_;
+  uint8_t* base_;
+  uint8_t* marker_;
+  uint8_t* end_;
+};
+
+}  // namespace mxcore
+
+#endif  // MXCORE_LINEAR_ALLOCATOR_H_

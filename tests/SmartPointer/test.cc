@@ -26,7 +26,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
-#include <MXCore/smart_pointer.h>
+#include <mxcore/smart_pointer.h>
 
 using namespace mxcore;
 
