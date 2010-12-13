@@ -113,14 +113,14 @@ class MemoryTracker {
   #define mxfree(pointer) { if (!mxcore::MemoryTracker::Remove( \
               mxcore::MemoryTracker::Free((pointer)))) assert(false && #pointer); }
 #else
-  #define mxnew(type, constructor) new (type)((constructor))
+  #define mxnew(type, constructor) new type constructor
   #define mxdelete(pointer) delete (pointer)
 
-  #define mxnew_array(type, size) new (type)[(size)]
-  #define mxdelete_array(pointer) delete[] (pointer)
+  #define mxnew_array(type, size) new type [ size ]
+  #define mxdelete_array(pointer) delete[] pointer
 
-  #define mxalloc(size) malloc((size))
-  #define mxfree(pointer) free((pointer))
+  #define mxalloc(size) malloc(size)
+  #define mxfree(pointer) free(pointer)
 #endif
 
 #endif  // MXCORE_MEMORY_TRACKER_H_
