@@ -37,7 +37,9 @@ namespace core {
 
 // A finalizer is prepended to every object allocated from the memory pool.
 // Before rewinding allocated memory, ScopeStack iterates over all finalizers,
-// calling destructors and teardown functions.
+// calling destructors and teardown functions. Implemented after this
+// presentation by Andreas Fredriksson:
+// http://publications.dice.se/attachments/scopestacks_public.pdf
 struct Finalizer {
   void (*function_)(void* data);
   Finalizer* next;
