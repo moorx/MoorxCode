@@ -30,17 +30,17 @@
 using namespace mx::gfx;
 
 int main() {
-  Window win;
+  Window window;
   Driver driver;
 
-  win.Open(640, 400, "GfxDriver");
-  driver.Initialize(640, 400, FORMAT_R8G8B8A8_UNSIGNED);
+  window.Open(640, 400, "GfxDriver");
+  driver.Initialize(window, FORMAT_R8G8B8A8_UNSIGNED);
 
-  while (win.is_open()) {
-    win.Update();
+  while (window.is_open()) {
+    window.Update();
     driver.Present();
   }
 
-  win.Dispose();
+  window.Dispose();
   return 0;
 }

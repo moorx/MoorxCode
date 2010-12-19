@@ -34,20 +34,4 @@
 #include "mxgfx/driver.h"
 #include "mxgfx/window.h"
 
-#if defined(__APPLE__)
-  #include "mxgfx/cocoa_driver.h"
-  #include "mxgfx/cocoa_window.h"
-#endif
-
-namespace mx {
-namespace gfx {
-
-#if defined(__APPLE__)
-  typedef WindowBase<CocoaWindow> Window;
-  typedef DriverBase<CocoaDriver> Driver;
-#endif
-
-}  // namespace gfx
-}  // namespace mx
-
 #endif  // MXGFX_MXGFX_H_

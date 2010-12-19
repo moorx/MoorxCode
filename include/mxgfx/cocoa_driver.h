@@ -30,6 +30,7 @@
 
 #include <mxcore/mxcore.h>
 #include "mxgfx/format.h"
+#include "mxgfx/window.h"
 
 namespace mx {
 namespace gfx {
@@ -37,9 +38,8 @@ namespace gfx {
 class CocoaDriver {
  public:
   void Dispose();
-  void Initialize(uint32_t width, uint32_t height, Format format);
+  void Initialize(const Window& window, Format format);
   void Present();
-  void Resize(uint32_t width, uint32_t height, Format format);
 
   bool fullscreen() const;
   void set_fullscreen(bool fullscreen);

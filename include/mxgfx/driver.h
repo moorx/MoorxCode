@@ -28,6 +28,12 @@
 #ifndef MXGFX_DRIVER_BASE_H_
 #define MXGFX_DRIVER_BASE_H_
 
+#include "mxgfx/window.h"
+
+#if defined(__APPLE__)
+  #include "mxgfx/cocoa_driver.h"
+#endif
+
 namespace mx {
 namespace gfx {
 
@@ -40,18 +46,14 @@ class DriverBase {
     implementation_.Dispose();
   }
 
-  void Initialize(uint32_t width, uint32_t height, Format format) {
-    implementation_.Initialize(width, height, format);
+  void Initialize(const Window& window, Format format) {
+    implementation_.Initialize(window, format);
   }
 
   void Present() {
     implementation_.Present();
   }
 
-  void Resize(uint32_t width, uint32_t height, Format format) {
-    implementation_.Resize(width, height, format);
-  }
-  
   bool fullscreen() const {
     return implementation_.fullscreen();
   }
@@ -67,6 +69,10 @@ class DriverBase {
  private:
   ImplementationType implementation_;
 };
+
+#if defined(__APPLE__)
+  typedef DriverBase<CocoaDriver> Driver;
+#endif
 
 }  // namespace gfx
 }  // namespace mx

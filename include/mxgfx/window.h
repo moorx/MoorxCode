@@ -28,6 +28,10 @@
 #ifndef MXGFX_WINDOW_BASE_H_
 #define MXGFX_WINDOW_BASE_H_
 
+#if defined(__APPLE__)
+  #include "mxgfx/cocoa_window.h"
+#endif
+
 namespace mx {
 namespace gfx {
 
@@ -36,9 +40,13 @@ class WindowBase {
  public:
   typedef T ImplementationType;
   typedef typename T::NativeHandleType NativeHandleType;
- 
+
+  WindowBase() : width_(0), height_(0) {}
+
   void Open(uint32_t width, uint32_t height, const char8_t* title) {
     implementation_.Open(width, height, title);
+    width_ = width;
+    height_ = height;
   }
 
   void Update() {
@@ -57,9 +65,24 @@ class WindowBase {
     return implementation_.is_open();
   }
 
+  uint32_t width() const {
+    return width_;
+  }
+
+  uint32_t height() const {
+    return height_;
+  }
+
  private:
+  uint32_t width_;
+  uint32_t height_;
   ImplementationType implementation_;
 };
+
+
+#if defined(__APPLE__)
+  typedef WindowBase<CocoaWindow> Window;
+#endif
 
 }  // namespace gfx
 }  // namespace mx
