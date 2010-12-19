@@ -71,22 +71,21 @@ namespace gfx {
 
 void CocoaDriver::Initialize(const Window& window, Format format) {
   NSRect view_rect = NSMakeRect(0, 0, window.width(), window.height());
-  MXOpenGLView* opengl_view = [[MXOpenGLView alloc] initWithFrame: view_rect];
-
-  [[(NSWindow*)window.native_handle() contentView] addSubview: opengl_view];
-  [opengl_view release];
+  opengl_view_ = [[MXOpenGLView alloc] initWithFrame: view_rect];
+  [[(NSWindow*)window.native_handle() contentView]
+      addSubview: (MXOpenGLView*)opengl_view_];
 }
 
 void CocoaDriver::Dispose() {
+  [(MXOpenGLView*)opengl_view_ release];
 }
 
 void CocoaDriver::Present() {
-  NSView* main_view = [[NSApp mainWindow] contentView];
-  [[[[main_view subviews] objectAtIndex: 0] openGLContext] makeCurrentContext];
+  [[(MXOpenGLView*)opengl_view_ openGLContext] makeCurrentContext];
 
-  glClear(GL_COLOR_BUFFER_BIT);
+  // TODO: process render queue
 
-  [[[[main_view subviews] objectAtIndex: 0] openGLContext] flushBuffer];
+  [[(MXOpenGLView*)opengl_view_ openGLContext] flushBuffer];
   [NSOpenGLContext clearCurrentContext];
 }
 

@@ -47,6 +47,7 @@ class CocoaDriver {
 
  private:
   void* release_pool_;
+  void* opengl_view_;
 };
 
 }  // namespace gfx
