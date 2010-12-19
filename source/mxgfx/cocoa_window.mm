@@ -149,6 +149,8 @@ CocoaWindow::NativeHandleType CocoaWindow::CreateWindow(uint32_t width,
   [window makeKeyAndOrderFront: nil];
   [window center];
   [view release];
+
+  return window;
 }
 
 }  // namespace gfx
