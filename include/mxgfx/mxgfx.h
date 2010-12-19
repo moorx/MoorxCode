@@ -31,8 +31,8 @@
 #include <mxcore/mxcore.h>
 
 #include "mxgfx/format.h"
-#include "mxgfx/driver_base.h"
-#include "mxgfx/window_base.h"
+#include "mxgfx/driver.h"
+#include "mxgfx/window.h"
 
 #if defined(__APPLE__)
   #include "mxgfx/cocoa_driver.h"
