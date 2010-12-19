@@ -35,10 +35,10 @@ template <class T>
 class WindowBase {
  public:
   typedef T ImplementationType;
+  typedef typename T::NativeHandleType NativeHandleType;
  
   void Open(uint32_t width, uint32_t height, const char8_t* title) {
     implementation_.Open(width, height, title);
-    main_window_ = this;
   }
 
   void Update() {
@@ -49,22 +49,17 @@ class WindowBase {
     implementation_.Dispose();
   }
 
-  static WindowBase<T>* main_window() {
-    assert(main_window_ != NULL);
-    return main_window_;
+  NativeHandleType native_handle() const {
+    return implementation_.native_handle();
   }
 
-  bool closed() const {
-    return implementation_.closed();
+  bool is_open() const {
+    return implementation_.is_open();
   }
 
  private:
   ImplementationType implementation_;
-  static WindowBase<T>* main_window_;
 };
-
-template <class T>
-WindowBase<T>* WindowBase<T>::main_window_ = NULL;
 
 }  // namespace gfx
 }  // namespace mx

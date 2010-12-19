@@ -29,17 +29,17 @@
 #import "mxgfx/cocoa_window.h"
 
 @interface MXApplication: NSApplication {
-  BOOL closed_;
+  BOOL is_open_;
 }
 
-- (BOOL)closed;
+- (BOOL)is_open;
 
 @end
 
 @implementation MXApplication
 
 - (void)run {
-  closed_ = NO;
+  is_open_ = YES;
   [self finishLaunching];
 }
 
@@ -56,11 +56,11 @@
 }
 
 - (void)terminate: (id)sender {
-  closed_ = YES;
+  is_open_ = NO;
 }
 
-- (BOOL)closed {
-  return closed_;
+- (BOOL)is_open {
+  return is_open_;
 }
 
 @end
@@ -81,6 +81,9 @@
 namespace mx {
 namespace gfx {
 
+CocoaWindow::CocoaWindow() : native_handle_(NULL) {
+}
+
 void CocoaWindow::Open(uint32_t width, uint32_t height, const char8_t* title) {
   release_pool_ = [NSAutoreleasePool new];
 
@@ -88,6 +91,30 @@ void CocoaWindow::Open(uint32_t width, uint32_t height, const char8_t* title) {
   [NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
   [NSApp activateIgnoringOtherApps: YES];
 
+  CreateMenu();
+  native_handle_ = CreateWindow(width, height, title);
+
+  [NSApp run];
+}
+
+void CocoaWindow::Update() {
+  [NSApp processEvents];
+}
+
+void CocoaWindow::Dispose() {
+  [(NSAutoreleasePool*)release_pool_ release];
+}
+
+CocoaWindow::NativeHandleType CocoaWindow::native_handle() const {
+  assert(native_handle_ != NULL);
+  return native_handle_;
+}
+
+bool CocoaWindow::is_open() const {
+  return [NSApp is_open];
+}
+
+void CocoaWindow::CreateMenu() {
   id menubar = [[NSMenu new] autorelease];
   id app_menuitem = [[NSMenuItem new] autorelease];
   [menubar addItem: app_menuitem];
@@ -99,7 +126,11 @@ void CocoaWindow::Open(uint32_t width, uint32_t height, const char8_t* title) {
       action: @selector(terminate:) keyEquivalent: @"q"] autorelease];
   [appmenu addItem: quit_menuitem];
   [app_menuitem setSubmenu: appmenu];
-  
+}
+
+CocoaWindow::NativeHandleType CocoaWindow::CreateWindow(uint32_t width,
+                                                        uint32_t height,
+                                                        const char8_t* title) {
   NSRect view_rect = NSMakeRect(0, 0, width, height);
   MXMainView* view = [[MXMainView alloc] initWithFrame: view_rect];
   NSWindow *window = [[NSWindow alloc]
@@ -118,20 +149,6 @@ void CocoaWindow::Open(uint32_t width, uint32_t height, const char8_t* title) {
   [window makeKeyAndOrderFront: nil];
   [window center];
   [view release];
-
-  [NSApp run];
-}
-
-void CocoaWindow::Update() {
-  [NSApp processEvents];
-}
-
-void CocoaWindow::Dispose() {
-  [(NSAutoreleasePool*)release_pool_ release];
-}
-
-bool CocoaWindow::closed() const {
-  return [NSApp closed];
 }
 
 }  // namespace gfx

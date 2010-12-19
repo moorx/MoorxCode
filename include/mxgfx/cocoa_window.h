@@ -35,14 +35,24 @@ namespace gfx {
 
 class CocoaWindow {
  public:
+  typedef void* NativeHandleType;
+
+  CocoaWindow();
+
   void Open(uint32_t width, uint32_t height, const char8_t* title);
   void Update();
   void Dispose();
 
-  bool closed() const;
+  NativeHandleType native_handle() const;
+  bool is_open() const;
 
  private:
+  void CreateMenu();
+  NativeHandleType CreateWindow(uint32_t width, uint32_t height,
+                                const char8_t* title);
+
   void* release_pool_;
+  NativeHandleType native_handle_;
 };
 
 }  // namespace gfx

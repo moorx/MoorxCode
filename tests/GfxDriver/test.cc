@@ -36,7 +36,7 @@ int main() {
   win.Open(640, 400, "GfxDriver");
   driver.Initialize(640, 400, FORMAT_R8G8B8A8_UNSIGNED);
 
-  while (!win.closed()) {
+  while (win.is_open()) {
     win.Update();
     driver.Present();
   }
