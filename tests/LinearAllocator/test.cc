@@ -26,13 +26,14 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <stdio.h>
+#include <string.h>
 #include <mxcore/aligned_memory.h>
 #include <mxcore/linear_allocator.h>
 
 using namespace mx::core;
 
 int main() {
-  AlignedMemory<8> small_chunk(1);
+  AlignedMemory<8> small_chunk(4);
   LinearAllocator small_allocator(small_chunk.pointer(), small_chunk.size());
 
   AlignedMemory<8> big_chunk(4096);
@@ -46,12 +47,13 @@ int main() {
 
   uint32_t* data = reinterpret_cast<uint32_t*>(big_allocator.Allocate(
           sizeof(uint32_t) * 613));
+  memset(data, 0, sizeof(uint32_t) * 613);
   
   uintptr_t marker_after = reinterpret_cast<uintptr_t>(big_allocator.marker());
   printf("big_allocator.marker() = %p\n", big_allocator.marker());
   printf("%lu\n", marker_after - marker_before);
 
-  big_allocator.Rewind(reinterpret_cast<uint8_t*>(marker_before - 1));
+  big_allocator.Rewind(reinterpret_cast<uint8_t*>(marker_before));
 
   return 0;
 }
