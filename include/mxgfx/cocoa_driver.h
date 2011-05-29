@@ -38,7 +38,7 @@ namespace gfx {
 class CocoaDriver {
  public:
   void Dispose();
-  void Initialize(const Window& window, Format format);
+  void Initialize(const Window* window, Format format);
   void Present();
 
   bool fullscreen() const;

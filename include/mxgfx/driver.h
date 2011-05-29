@@ -46,7 +46,7 @@ class DriverBase {
     implementation_.Dispose();
   }
 
-  void Initialize(const Window& window, Format format) {
+  void Initialize(const Window* window, Format format) {
     implementation_.Initialize(window, format);
   }
 

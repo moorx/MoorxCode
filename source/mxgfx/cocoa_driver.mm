@@ -69,10 +69,10 @@
 namespace mx {
 namespace gfx {
 
-void CocoaDriver::Initialize(const Window& window, Format format) {
-  NSRect view_rect = NSMakeRect(0, 0, window.width(), window.height());
+void CocoaDriver::Initialize(const Window* window, Format format) {
+  NSRect view_rect = NSMakeRect(0, 0, window->width(), window->height());
   opengl_view_ = [[MXOpenGLView alloc] initWithFrame: view_rect];
-  [[(NSWindow*)window.native_handle() contentView]
+  [[(NSWindow*)window->native_handle() contentView]
       addSubview: (MXOpenGLView*)opengl_view_];
 }
 

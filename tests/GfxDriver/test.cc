@@ -25,22 +25,26 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <mxcore/mxcore.h>
 #include <mxgfx/mxgfx.h>
 
+using namespace mx::core;
 using namespace mx::gfx;
 
 int main() {
-  Window window;
-  Driver driver;
+  Window* window = mxnew(Window, ());
+  Driver* driver = mxnew(Driver, ());
 
-  window.Open(640, 400, "GfxDriver");
-  driver.Initialize(window, FORMAT_R8G8B8A8_UNSIGNED);
+  window->Open(640, 400, "GfxDriver");
+  driver->Initialize(window, FORMAT_R8G8B8A8_UNSIGNED);
 
-  while (window.is_open()) {
-    window.Update();
-    driver.Present();
+  while (window->is_open()) {
+    window->Update();
+    driver->Present();
   }
 
-  window.Dispose();
+  window->Dispose();
+  mxdelete(driver);
+  mxdelete(window);
   return 0;
 }
