@@ -84,7 +84,7 @@ namespace gfx {
 CocoaWindow::CocoaWindow() : native_handle_(NULL) {
 }
 
-void CocoaWindow::Open(uint32_t width, uint32_t height, const char8_t* title) {
+void CocoaWindow::Open(uint32_t width, uint32_t height, const char* title) {
   release_pool_ = [NSAutoreleasePool new];
 
   [MXApplication sharedApplication];
@@ -130,7 +130,7 @@ void CocoaWindow::CreateMenu() {
 
 CocoaWindow::NativeHandleType CocoaWindow::CreateWindow(uint32_t width,
                                                         uint32_t height,
-                                                        const char8_t* title) {
+                                                        const char* title) {
   NSRect view_rect = NSMakeRect(0, 0, width, height);
   MXMainView* view = [[MXMainView alloc] initWithFrame: view_rect];
   NSWindow *window = [[NSWindow alloc]
