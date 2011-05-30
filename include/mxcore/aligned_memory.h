@@ -36,14 +36,14 @@ namespace mx {
 namespace core {
 
 // A chunk of aligned memory.
-template <const size_t kAlignment>
+template <const uint8_t kAlignment>
 class AlignedMemory {
  public:
   AlignedMemory(const size_t size);
   ~AlignedMemory();
 
   size_t size() const { return size_; }
-  size_t alignment() const { return kAlignment; }
+  uint8_t alignment() const { return kAlignment; }
   void* pointer() const { return pointer_; }
 
  private:
@@ -53,30 +53,34 @@ class AlignedMemory {
   const size_t size_;
 };
 
-template <const size_t kAlignment>
+template <const uint8_t kAlignment>
 AlignedMemory<kAlignment>::AlignedMemory(const size_t size) : size_(size) {
+  assert(kAlignment <= 255);
+
   uintptr_t raw_address = reinterpret_cast<uintptr_t>(
       mxalloc(size_ + kAlignment));
 
   uintptr_t mask = kAlignment - 1;
   size_t misalignment = raw_address & mask;
-  size_t adjustment = kAlignment - misalignment;
+  uint8_t adjustment = kAlignment - misalignment;
   uintptr_t aligned_address = raw_address + adjustment;
 
-  assert(kAlignment >= sizeof(adjustment));
-  size_t* adjustment_pointer = reinterpret_cast<size_t*>(
-      aligned_address - sizeof(adjustment));
+  assert(adjustment <= kAlignment);
+
+  uint8_t* adjustment_pointer = reinterpret_cast<uint8_t*>(
+      aligned_address - sizeof(uint8_t));
   *adjustment_pointer = adjustment;
 
   pointer_ = reinterpret_cast<void*>(aligned_address);
 }
 
-template <const size_t kAlignment>
+template <const uint8_t kAlignment>
 AlignedMemory<kAlignment>::~AlignedMemory() {
   uintptr_t aligned_address = reinterpret_cast<uintptr_t>(pointer_);
-  size_t* adjustment_pointer = reinterpret_cast<size_t*>(
-      aligned_address - sizeof(size_t));
-  size_t adjustment = *adjustment_pointer;
+  uint8_t* adjustment_pointer = reinterpret_cast<uint8_t*>(
+      aligned_address - sizeof(uint8_t));
+  uint8_t adjustment = *adjustment_pointer;
+  assert(adjustment <= kAlignment);
   mxfree(reinterpret_cast<void*>(aligned_address - adjustment));
 }
 
