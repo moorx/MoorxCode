@@ -39,11 +39,11 @@ namespace internal {
 
 // Stores information about an allocation.
 struct Allocation {
-  Allocation(void* pointer, const char8_t* file, const uint32_t line,
+  Allocation(void* pointer, const char* file, const uint32_t line,
              const size_t size);
 
   void* pointer_;
-  const char8_t* file_;
+  const char* file_;
   const uint32_t line_;
   const size_t size_;
 };

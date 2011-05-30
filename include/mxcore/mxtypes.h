@@ -33,7 +33,4 @@
 #include <float.h>
 #include <math.h>
 
-typedef char char8_t;
-typedef unsigned char uchar8_t;
-
 #endif  // MXCORE_MXTYPES_H_

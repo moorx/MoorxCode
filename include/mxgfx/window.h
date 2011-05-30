@@ -43,7 +43,7 @@ class WindowBase {
 
   WindowBase() : width_(0), height_(0) {}
 
-  void Open(uint32_t width, uint32_t height, const char8_t* title) {
+  void Open(uint32_t width, uint32_t height, const char* title) {
     implementation_.Open(width, height, title);
     width_ = width;
     height_ = height;

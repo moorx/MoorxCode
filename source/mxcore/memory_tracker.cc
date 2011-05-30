@@ -32,7 +32,7 @@ namespace core {
 
 namespace internal {
 
-Allocation::Allocation(void* pointer, const char8_t* file, const uint32_t line,
+Allocation::Allocation(void* pointer, const char* file, const uint32_t line,
                        const size_t size)
     : pointer_(pointer),
       file_(file),

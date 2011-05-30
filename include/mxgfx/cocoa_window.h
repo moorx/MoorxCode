@@ -39,7 +39,7 @@ class CocoaWindow {
 
   CocoaWindow();
 
-  void Open(uint32_t width, uint32_t height, const char8_t* title);
+  void Open(uint32_t width, uint32_t height, const char* title);
   void Update();
   void Dispose();
 
@@ -49,7 +49,7 @@ class CocoaWindow {
  private:
   void CreateMenu();
   NativeHandleType CreateWindow(uint32_t width, uint32_t height,
-                                const char8_t* title);
+                                const char* title);
 
   void* release_pool_;
   NativeHandleType native_handle_;
