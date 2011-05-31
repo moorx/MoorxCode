@@ -55,8 +55,6 @@ class AlignedMemory {
 
 template <const uint8_t kAlignment>
 AlignedMemory<kAlignment>::AlignedMemory(const size_t size) : size_(size) {
-  assert(kAlignment <= 255);
-
   uintptr_t raw_address = reinterpret_cast<uintptr_t>(
       mxalloc(size_ + kAlignment));
 
