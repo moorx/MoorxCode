@@ -37,6 +37,8 @@ int main() {
 
   window->Open(640, 400, "GfxDriver");
   driver->Initialize(window, FORMAT_R8G8B8A8_UNSIGNED);
+  //driver->set_fullscreen(true);
+  //driver->set_fullscreen(false);
 
   while (window->is_open()) {
     window->Update();

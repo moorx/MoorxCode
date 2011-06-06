@@ -144,11 +144,7 @@ CocoaWindow::NativeHandleType CocoaWindow::CreateWindow(uint32_t width,
   NSString* title_string = [NSString stringWithCString: title
       encoding: NSASCIIStringEncoding];
   [window setTitle: title_string];
-  [window setContentView: view];
   [window setDelegate: view];
-  [window makeKeyAndOrderFront: nil];
-  [window center];
-  [view release];
 
   return window;
 }

@@ -41,13 +41,18 @@ class CocoaDriver {
   void Initialize(const Window* window, Format format);
   void Present();
 
-  bool fullscreen() const;
+  bool fullscreen() const { return fullscreen_; }
   void set_fullscreen(bool fullscreen);
-  Format format() const;
+  Format format() const { return format_; }
 
  private:
-  void* release_pool_;
+  void SwitchToFullscreen();
+  void SwitchToWindow();
+
   void* opengl_view_;
+  const Window* window_;
+  Format format_;
+  bool fullscreen_;
 };
 
 }  // namespace gfx

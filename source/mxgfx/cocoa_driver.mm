@@ -70,10 +70,9 @@ namespace mx {
 namespace gfx {
 
 void CocoaDriver::Initialize(const Window* window, Format format) {
-  NSRect view_rect = NSMakeRect(0, 0, window->width(), window->height());
-  opengl_view_ = [[MXOpenGLView alloc] initWithFrame: view_rect];
-  [[(NSWindow*)window->native_handle() contentView]
-      addSubview: (MXOpenGLView*)opengl_view_];
+  window_ = window;
+  format_ = format;
+  SwitchToWindow();
 }
 
 void CocoaDriver::Dispose() {
@@ -84,9 +83,46 @@ void CocoaDriver::Present() {
   [[(MXOpenGLView*)opengl_view_ openGLContext] makeCurrentContext];
 
   // TODO: process render queue
+  glClear(GL_COLOR_BUFFER_BIT);
 
   [[(MXOpenGLView*)opengl_view_ openGLContext] flushBuffer];
   [NSOpenGLContext clearCurrentContext];
+}
+
+void CocoaDriver::SwitchToFullscreen() {
+  NSRect view_rect = [[NSScreen mainScreen] frame];
+  NSWindow* window = (NSWindow*)window_->native_handle();
+  [window setStyleMask: NSBorderlessWindowMask];
+  [window setFrame: view_rect display: YES animate: YES];
+  [window setLevel: NSMainMenuWindowLevel + 1];
+  [(MXOpenGLView*)opengl_view_ release];
+  opengl_view_ = [[MXOpenGLView alloc] initWithFrame: view_rect];
+  [window setContentView: (MXOpenGLView*)opengl_view_];
+  [window makeKeyAndOrderFront: window];
+}
+
+void CocoaDriver::SwitchToWindow() {
+  NSRect view_rect = NSMakeRect(0, 0, window_->width(), window_->height());
+  NSWindow* window = (NSWindow*)window_->native_handle();
+  [window setStyleMask: NSTitledWindowMask | NSClosableWindowMask |
+      NSMiniaturizableWindowMask];
+  [window setFrame: view_rect display: YES];
+  [window setLevel: NSMainMenuWindowLevel];
+  [(MXOpenGLView*)opengl_view_ release];
+  opengl_view_ = [[MXOpenGLView alloc] initWithFrame: view_rect];
+  [window setContentView: (MXOpenGLView*)opengl_view_];
+  [window makeKeyAndOrderFront: window];
+  [window center];
+}
+
+void CocoaDriver::set_fullscreen(bool fullscreen) {
+  if (fullscreen) {
+    SwitchToFullscreen();
+  } else {
+    SwitchToWindow();
+  }
+
+  fullscreen_ = fullscreen;
 }
 
 }  // namespace gfx
