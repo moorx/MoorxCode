@@ -115,14 +115,14 @@ bool CocoaWindow::is_open() const {
 }
 
 void CocoaWindow::CreateMenu() {
-  id menubar = [[NSMenu new] autorelease];
-  id app_menuitem = [[NSMenuItem new] autorelease];
+  NSMenu* menubar = [[NSMenu new] autorelease];
+  NSMenuItem* app_menuitem = [[NSMenuItem new] autorelease];
   [menubar addItem: app_menuitem];
   [NSApp setMainMenu: menubar];
-  id appmenu = [[NSMenu new] autorelease];
-  id appname = [[NSProcessInfo processInfo] processName];
-  id quit_title = [@"Quit " stringByAppendingString: appname];
-  id quit_menuitem = [[[NSMenuItem alloc] initWithTitle: quit_title
+  NSMenu* appmenu = [[NSMenu new] autorelease];
+  NSString* appname = [[NSProcessInfo processInfo] processName];
+  NSString* quit_title = [@"Quit " stringByAppendingString: appname];
+  NSMenuItem* quit_menuitem = [[[NSMenuItem alloc] initWithTitle: quit_title
       action: @selector(terminate:) keyEquivalent: @"q"] autorelease];
   [appmenu addItem: quit_menuitem];
   [app_menuitem setSubmenu: appmenu];
