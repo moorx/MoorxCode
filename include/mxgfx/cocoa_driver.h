@@ -29,7 +29,6 @@
 #define MXGFX_COCOA_DRIVER_H_
 
 #include <mxcore/mxcore.h>
-#include "mxgfx/format.h"
 #include "mxgfx/window.h"
 
 namespace mx {
@@ -38,12 +37,11 @@ namespace gfx {
 class CocoaDriver {
  public:
   void Dispose();
-  void Initialize(const Window* window, Format format);
+  void Initialize(const Window* window);
   void Present();
 
   bool fullscreen() const { return fullscreen_; }
   void set_fullscreen(bool fullscreen);
-  Format format() const { return format_; }
 
  private:
   void SwitchToFullscreen();
@@ -51,7 +49,6 @@ class CocoaDriver {
 
   void* opengl_view_;
   const Window* window_;
-  Format format_;
   bool fullscreen_;
 };
 

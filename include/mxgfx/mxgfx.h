@@ -30,7 +30,6 @@
 
 #include <mxcore/mxcore.h>
 
-#include "mxgfx/format.h"
 #include "mxgfx/driver.h"
 #include "mxgfx/window.h"
 

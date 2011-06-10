@@ -46,8 +46,8 @@ class DriverBase {
     implementation_.Dispose();
   }
 
-  void Initialize(const Window* window, Format format) {
-    implementation_.Initialize(window, format);
+  void Initialize(const Window* window) {
+    implementation_.Initialize(window);
   }
 
   void Present() {
@@ -60,10 +60,6 @@ class DriverBase {
 
   void set_fullscreen(bool fullscreen) {
     implementation_.set_fullscreen(fullscreen);
-  }
-
-  Format format() const {
-    return implementation_.format();
   }
 
  private:

@@ -69,9 +69,8 @@
 namespace mx {
 namespace gfx {
 
-void CocoaDriver::Initialize(const Window* window, Format format) {
+void CocoaDriver::Initialize(const Window* window) {
   window_ = window;
-  format_ = format;
   SwitchToWindow();
 }
 

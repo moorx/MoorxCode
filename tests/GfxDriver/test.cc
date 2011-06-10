@@ -36,7 +36,7 @@ int main() {
   Driver* driver = mxnew(Driver, ());
 
   window->Open(640, 400, "GfxDriver");
-  driver->Initialize(window, FORMAT_R8G8B8A8_UNSIGNED);
+  driver->Initialize(window);
   //driver->set_fullscreen(true);
   //driver->set_fullscreen(false);
 
