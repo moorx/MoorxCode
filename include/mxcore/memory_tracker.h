@@ -29,8 +29,8 @@
 #define MXCORE_MEMORY_TRACKER_H_
 
 #include <assert.h>
+#include <stdint.h>
 #include <tr1/unordered_map>
-#include "mxcore/mxtypes.h"
 
 namespace mx {
 namespace core {

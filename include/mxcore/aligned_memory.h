@@ -29,7 +29,7 @@
 #define MXCORE_ALIGNED_MEMORY_H_
 
 #include <assert.h>
-#include "mxcore/mxtypes.h"
+#include <stdint.h>
 #include "mxcore/memory_tracker.h"
 
 namespace mx {

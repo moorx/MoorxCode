@@ -29,7 +29,7 @@
 #define MXCORE_SCOPE_ALLOCATOR_H_
 
 #include <new>
-#include "mxcore/mxtypes.h"
+#include <stdint.h>
 #include "mxcore/scope_stack.h"
 
 namespace mx {

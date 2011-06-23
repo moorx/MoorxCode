@@ -28,7 +28,7 @@
 #ifndef MXCORE_LINEAR_ALLOCATOR_H_
 #define MXCORE_LINEAR_ALLOCATOR_H_
 
-#include "mxcore/mxtypes.h"
+#include <stdint.h>
 
 namespace mx {
 namespace core {

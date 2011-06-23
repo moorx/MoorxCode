@@ -29,7 +29,7 @@
 #define MXCORE_SCOPE_STACK_H_
 
 #include <new>
-#include "mxcore/mxtypes.h"
+#include <stdint.h>
 #include "mxcore/linear_allocator.h"
 
 namespace mx {

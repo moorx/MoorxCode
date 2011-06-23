@@ -28,8 +28,6 @@
 #ifndef MXCORE_SMART_POINTER_H_
 #define MXCORE_SMART_POINTER_H_
 
-#include "mxcore/mxtypes.h"
-
 namespace mx {
 namespace core {
 

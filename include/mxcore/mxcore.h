@@ -31,7 +31,6 @@
 #include "mxcore/aligned_memory.h"
 #include "mxcore/linear_allocator.h"
 #include "mxcore/memory_tracker.h"
-#include "mxcore/mxtypes.h"
 #include "mxcore/scope_allocator.h"
 #include "mxcore/scope_stack.h"
 #include "mxcore/smart_pointer.h"
