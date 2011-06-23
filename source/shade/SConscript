@@ -26,7 +26,4 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Import('env', 'mode')
-Export('env', 'mode')
-SConscript(['mxcore/SConscript'])
-SConscript(['mxgfx/SConscript'])
-SConscript(['shade/SConscript'])
+env.Library('#/shade', Glob('*.cc'))
