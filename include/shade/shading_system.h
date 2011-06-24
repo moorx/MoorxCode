@@ -46,9 +46,9 @@ struct RenderBlock {
   RenderBlock(const float* vertex_buffer, const uint16_t* index_buffer,
               const SurfaceShader* surface_shader);
 
-  float* vertex_buffer_;
-  uint16_t* index_buffer_;
-  SurfaceShader* surface_shader_;
+  float* vertex_buffer;
+  uint16_t* index_buffer;
+  SurfaceShader* surface_shader;
 };
 
 // A render API abstraction layer. Takes render blocks (render state + geometry)
