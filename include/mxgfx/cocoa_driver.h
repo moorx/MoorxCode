@@ -28,7 +28,6 @@
 #ifndef MXGFX_COCOA_DRIVER_H_
 #define MXGFX_COCOA_DRIVER_H_
 
-#include <mxcore/mxcore.h>
 #include "mxgfx/window.h"
 
 namespace mx {

@@ -27,7 +27,10 @@
 
 #include <vector>
 #include <stdio.h>
-#include <mxcore/mxcore.h>
+#include <mxcore/aligned_memory.h>
+#include <mxcore/linear_allocator.h>
+#include <mxcore/scope_allocator.h>
+#include <mxcore/scope_stack.h>
 
 using namespace mx::core;
 

@@ -28,8 +28,6 @@
 #ifndef MXGFX_COCOA_WINDOW_H_
 #define MXGFX_COCOA_WINDOW_H_
 
-#include <mxcore/mxcore.h>
-
 namespace mx {
 namespace gfx {
 

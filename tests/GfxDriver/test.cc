@@ -25,8 +25,9 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <mxcore/mxcore.h>
-#include <mxgfx/mxgfx.h>
+#include <mxcore/memory_tracker.h>
+#include <mxgfx/window.h>
+#include <mxgfx/driver.h>
 
 using namespace mx::core;
 using namespace mx::gfx;
