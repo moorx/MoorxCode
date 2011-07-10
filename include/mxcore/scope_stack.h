@@ -57,7 +57,7 @@ void CallDestructor(void* data) {
 // have to live on the stack!
 class ScopeStack {
  public:
-  explicit  ScopeStack(LinearAllocator& allocator)
+  explicit ScopeStack(LinearAllocator& allocator)
       : allocator_(allocator),
         base_(allocator.marker()),
         finalizer_chain_(NULL) {
