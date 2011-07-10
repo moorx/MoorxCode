@@ -28,27 +28,40 @@
 #ifndef SHADE_SHADING_SYSTEM_H_
 #define SHADE_SHADING_SYSTEM_H_
 
+#include <stdint.h>
 #include <vector>
 
 namespace mx {
 namespace shade {
 
-// Abstract, high-level representation of render state and shaders. The shading
-// system backend chooses the right code paths for setting the appropriate low
-// level states and shaders.
-class SurfaceShader {
+struct VertexBuffer {
+ public:
+  VertexBuffer() : data_(NULL), start_(0), size_(0) {}
+  VertexBuffer(float* data, size_t start, size_t size)
+      : data_(data),
+        start_(start),
+        size_(size) {}
+
+  float* data_;
+  size_t start_;
+  size_t size_;
+};
+
+struct RenderState {
+  float diffuse_color_[3];
+  float ambient_light_[6];
 };
 
 // A render block encapsulates the vertices and state used to draw a piece of
 // geometry.
 struct RenderBlock {
-  RenderBlock();
-  RenderBlock(const float* vertex_buffer, const uint16_t* index_buffer,
-              const SurfaceShader* surface_shader);
+  RenderBlock() : vertex_buffer_(NULL), state_(NULL) {}
+  RenderBlock(VertexBuffer* vertex_buffer, RenderState* state)
+      : vertex_buffer_(vertex_buffer),
+        state_(state) {}
 
-  float* vertex_buffer;
-  uint16_t* index_buffer;
-  SurfaceShader* surface_shader;
+  VertexBuffer* vertex_buffer_;
+  RenderState* state_;
 };
 
 // A render API abstraction layer. Takes render blocks (render state + geometry)
@@ -57,15 +70,15 @@ struct RenderBlock {
 // native API.
 class ShadingSystem {
  public:
-  ShadingSystem();
-  virtual ~ShadingSystem();
+  ShadingSystem() {}
+  virtual ~ShadingSystem() {}
 
-  virtual void Initialize();
-  virtual void ReInitialize();
-  virtual void BeginFrame();
-  virtual void Render(const RenderBlock& rb);
+  virtual void Initialize() {}
+  virtual void ReInitialize() {}
+  void BeginFrame();
+  void Render(const RenderBlock& rb);
   virtual void EndFrame() = 0;
-  virtual void Dispose();
+  virtual void Dispose() {}
 
  protected:
   std::vector<RenderBlock> render_queue_;
