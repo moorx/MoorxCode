@@ -31,6 +31,9 @@ namespace mx {
 namespace shade {
 
 void ShadingSystemGL::EndFrame() {
+  std::vector<RenderBlock>::iterator renderblock_iterator = render_queue_.begin();
+  for (; renderblock_iterator != render_queue_.end(); ++renderblock_iterator) {
+  }
 }
 
 }  // namespace shade

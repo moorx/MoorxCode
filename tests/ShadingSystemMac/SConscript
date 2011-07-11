@@ -25,5 +25,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import sys
 Import('env', 'mode')
-env.Program('test.cc', LIBS = ['mxcore', 'shade'])
+
+if sys.platform == 'darwin':
+    env['FRAMEWORKS'] = ['Cocoa', 
+                         'OpenGL', 
+                         'CoreAudio', 
+                         'AudioUnit', 
+                         'Carbon', 
+                         'IOKit',
+                         'ForceFeedback']
+
+    env['LIBS'] = ['iconv']
+
+env['LIBS'] += ['mxcore', 'shade', 'SDL']
+env.Program('test.cc')

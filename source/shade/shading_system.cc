@@ -25,10 +25,16 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <SDL.h>
 #include "shade/shading_system.h"
 
 namespace mx {
 namespace shade {
+
+void ShadingSystem::Initialize() {
+  SDL_Init(SDL_INIT_VIDEO);
+  SDL_SetVideoMode(640, 400, 32, 0);
+}
 
 void ShadingSystem::BeginFrame() {
   render_queue_.clear();

@@ -73,7 +73,7 @@ class ShadingSystem {
   ShadingSystem() {}
   virtual ~ShadingSystem() {}
 
-  virtual void Initialize() {}
+  virtual void Initialize();
   virtual void ReInitialize() {}
   void BeginFrame();
   void Render(const RenderBlock& rb);

@@ -2,6 +2,7 @@
 *.o
 *.a
 !libSDLmain.a
+!libSDL.a
 config.log
 .sconsign.dblite
 tags

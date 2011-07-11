@@ -28,6 +28,7 @@
 #ifndef SHADE_SHADING_SYSTEM_GL_H_
 #define SHADE_SHADING_SYSTEM_GL_H_
 
+#include <SDL_opengl.h>
 #include "shade/shading_system.h"
 
 namespace mx {
@@ -35,7 +36,12 @@ namespace shade {
 
 class ShadingSystemGL : public ShadingSystem {
  public:
+  ShadingSystemGL() : shader_handle_(0) {}
+  virtual ~ShadingSystemGL() {}
   virtual void EndFrame();
+
+ private:
+  GLuint shader_handle_;
 };
 
 

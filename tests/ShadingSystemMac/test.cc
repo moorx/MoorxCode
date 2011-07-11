@@ -25,9 +25,14 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <shade/shading_system_mac.h>
+#include <mxcore/memory_tracker.h>
+#include <shade/shading_system_gl.h>
 
-int main()
-{
+using namespace mx::shade;
+
+int main() {
+  ShadingSystem* shading_system = mxnew(ShadingSystemGL, ());
+  shading_system->Initialize();
+
   return 0;
 }
