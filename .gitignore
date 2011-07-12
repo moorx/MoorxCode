@@ -3,6 +3,7 @@
 *.a
 !libSDLmain.a
 !libSDL.a
+!libopenctm.a
 config.log
 .sconsign.dblite
 tags
