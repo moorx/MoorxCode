@@ -25,6 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <SDL.h>
 #include <mxcore/memory_tracker.h>
 #include <shade/shading_system_gl.h>
 
@@ -33,6 +34,15 @@ using namespace mx::shade;
 int main() {
   ShadingSystem* shading_system = mxnew(ShadingSystemGL, ());
   shading_system->Initialize();
+  
+  SDL_Event e;
+  while (SDL_WaitEvent(&e) && e.type != SDL_QUIT) {
+    shading_system->BeginFrame();
+    shading_system->EndFrame();
+  }
 
+  shading_system->Dispose();
+  mxdelete(shading_system);
+  SDL_Quit();
   return 0;
 }

@@ -30,10 +30,36 @@
 namespace mx {
 namespace shade {
 
+void ShadingSystemGL::Initialize() {
+  ShadingSystem::Initialize();
+
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+  window_ = SDL_CreateWindow("ShadingSystemGL", SDL_WINDOWPOS_CENTERED,
+                             SDL_WINDOWPOS_CENTERED, 640, 400, 
+                             SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+  gl_context_ = SDL_GL_CreateContext(window_);
+  SDL_GL_SetSwapInterval(1);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
 void ShadingSystemGL::EndFrame() {
+  glClear(GL_COLOR_BUFFER_BIT);
+  
   std::vector<RenderBlock>::iterator renderblock_iterator = render_queue_.begin();
   for (; renderblock_iterator != render_queue_.end(); ++renderblock_iterator) {
   }
+
+  SDL_GL_SwapWindow(window_);
+}
+
+void ShadingSystemGL::Dispose() {
+  SDL_GL_DeleteContext(gl_context_);
+  SDL_DestroyWindow(window_);
 }
 
 }  // namespace shade

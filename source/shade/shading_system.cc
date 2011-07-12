@@ -33,7 +33,6 @@ namespace shade {
 
 void ShadingSystem::Initialize() {
   SDL_Init(SDL_INIT_VIDEO);
-  SDL_SetVideoMode(640, 400, 32, 0);
 }
 
 void ShadingSystem::BeginFrame() {
