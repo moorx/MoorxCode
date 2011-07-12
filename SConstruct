@@ -35,7 +35,7 @@ def CheckCommand(context, cmd):
     return result
 
 mode = ARGUMENTS.get('mode', 'debug')
-env = Environment(CPPPATH = ['#/include', '#/extlib/sdl/include'], 
+env = Environment(CPPPATH = ['#/include', '#/extlib/sdl/include', '#/extlib/GL3'], 
                   ENV = {'PATH' : os.environ['PATH']},
                   LIBPATH = ['#', '#/extlib/sdl/lib'])
 use_clang = False
