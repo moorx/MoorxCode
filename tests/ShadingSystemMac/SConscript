@@ -28,16 +28,18 @@
 import sys
 Import('env', 'mode')
 
+local_env = env.Clone()
+
 if sys.platform == 'darwin':
-    env['FRAMEWORKS'] = ['Cocoa', 
-                         'OpenGL', 
-                         'CoreAudio', 
-                         'AudioUnit', 
-                         'Carbon', 
-                         'IOKit',
-                         'ForceFeedback']
+    local_env['FRAMEWORKS'] = ['Cocoa', 
+                               'OpenGL', 
+                               'CoreAudio', 
+                               'AudioUnit', 
+                               'Carbon', 
+                               'IOKit',
+                               'ForceFeedback']
 
-    env['LIBS'] = ['iconv']
+    local_env['LIBS'] = ['iconv']
 
-env['LIBS'] += ['mxcore', 'shade', 'SDL']
-env.Program('test.cc')
+local_env['LIBS'] += ['mxcore', 'shade', 'SDL']
+local_env.Program('test.cc')
