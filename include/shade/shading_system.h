@@ -35,7 +35,6 @@ namespace mx {
 namespace shade {
 
 struct VertexBuffer {
- public:
   VertexBuffer() : data_(NULL), start_(0), size_(0) {}
   VertexBuffer(float* data, size_t start, size_t size)
       : data_(data),
@@ -43,6 +42,18 @@ struct VertexBuffer {
         size_(size) {}
 
   float* data_;
+  size_t start_;
+  size_t size_;
+};
+
+struct IndexBuffer {
+  IndexBuffer() : data_(NULL), start_(0), size_(0) {}
+  IndexBuffer(uint32_t* data, size_t start, size_t size)
+      : data_(data),
+        start_(start),
+        size_(size) {}
+
+  uint32_t* data_;
   size_t start_;
   size_t size_;
 };
@@ -55,12 +66,15 @@ struct RenderState {
 // A render block encapsulates the vertices and state used to draw a piece of
 // geometry.
 struct RenderBlock {
-  RenderBlock() : vertex_buffer_(NULL), state_(NULL) {}
-  RenderBlock(VertexBuffer* vertex_buffer, RenderState* state)
+  RenderBlock() : vertex_buffer_(NULL), index_buffer_(NULL), state_(NULL) {}
+  RenderBlock(VertexBuffer* vertex_buffer, IndexBuffer* index_buffer,
+              RenderState* state)
       : vertex_buffer_(vertex_buffer),
+        index_buffer_(index_buffer),
         state_(state) {}
 
   VertexBuffer* vertex_buffer_;
+  IndexBuffer* index_buffer_;
   RenderState* state_;
 };
 
