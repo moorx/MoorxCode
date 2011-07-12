@@ -25,6 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <assert.h>
 #include "shade/shading_system_gl.h"
 
 namespace mx {
@@ -41,6 +42,7 @@ void ShadingSystemGL::Initialize() {
   window_ = SDL_CreateWindow("ShadingSystemGL", SDL_WINDOWPOS_CENTERED,
                              SDL_WINDOWPOS_CENTERED, 640, 400, 
                              SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+  assert(window_ != NULL);
 
   gl_context_ = SDL_GL_CreateContext(window_);
   SDL_GL_SetSwapInterval(1);

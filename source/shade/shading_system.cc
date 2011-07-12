@@ -25,6 +25,7 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <assert.h>
 #include <SDL.h>
 #include "shade/shading_system.h"
 
@@ -32,7 +33,7 @@ namespace mx {
 namespace shade {
 
 void ShadingSystem::Initialize() {
-  SDL_Init(SDL_INIT_VIDEO);
+  assert(SDL_Init(SDL_INIT_VIDEO) != -1);
 }
 
 void ShadingSystem::BeginFrame() {
